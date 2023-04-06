@@ -2,6 +2,37 @@ const { user } = require("../prisma/db");
 const { hash } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
+const createUser = async function (data, role_name) {
+  const password = await hash(data.password, process.env.SALT);
+  return user
+    .create({
+      data: {
+        full_name: data.fullname,
+        username: data.username,
+        email: data.email,
+        password,
+        role: {
+          connectOrCreate: {
+            create: {
+              role_name,
+            },
+            where: {
+              role_name,
+            },
+          },
+        },
+      },
+    })
+    .then(
+      (User) => {
+        return sign(User, process.env.JWT_KEY);
+      },
+      (err) => {
+        throw { code: 500, err };
+      }
+    );
+};
+
 module.exports = {
   login: async function (req, res) {
     try {
@@ -15,40 +46,24 @@ module.exports = {
       res.status(500).send({ errors: e });
     }
   },
-  register: async function (req, res) {
-    try {
-      const password = await hash(req.body.password, process.env.SALT);
-      user
-        .create({
-          data: {
-            full_name: req.body.fullname,
-            username: req.body.username,
-            email: req.body.email,
-            password,
-            role: {
-              connectOrCreate: {
-                create: {
-                  role_name: "Pembeli",
-                },
-                where: {
-                  role_name: "Pembeli",
-                },
-              },
-            },
-          },
-        })
-        .then(
-          (User) => {
-            const token = sign(User, process.env.JWT_KEY);
-            res.status(200).send({ data: { token } });
-          },
-          (err) => {
-            console.log("error");
-            res.status(500).send({ errors: err });
-          }
-        );
-    } catch (e) {
-      res.status(500).send({ errors: e });
-    }
+  register: {
+    pembeli: async function (req, res) {
+      try {
+        createUser(req.body, "Pembeli")
+          .then((token) => res.send({ data: { token } }))
+          .catch((err) => res.status(err.code).send({ errors: err.err }));
+      } catch (e) {
+        res.status(500).send({ errors: e });
+      }
+    },
+    kedai: async function (req, res) {
+      try {
+        createUser(req.body, "Penjual")
+          .then((token) => res.send({ data: { token } }))
+          .catch((err) => res.status(err.code).send({ errors: err.err }));
+      } catch (e) {
+        res.status(500).send({ errors: e });
+      }
+    },
   },
 };

@@ -15,7 +15,16 @@ router.post(
   [struct.username, struct.email, struct.password],
   [notExist.username, notExist.email],
   errorHandler,
-  register
+  register.pembeli
+);
+
+router.post(
+  "/registerpenjual",
+  [required.fullname, required.username, required.email, required.password],
+  [struct.username, struct.email, struct.password],
+  [notExist.username, notExist.email],
+  errorHandler,
+  register.kedai
 );
 
 router.post(
