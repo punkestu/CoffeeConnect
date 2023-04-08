@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  Id        String        @id @default(uuid())
-  full_name String
-  username  String        @unique
-  email     String        @unique
-  password  String
-  role      Role          @relation(fields: [role_id], references: [Id])
-  role_id   Int
-  profile   User_Profile?
+  Id            String         @id @default(uuid())
+  full_name     String
+  username      String         @unique
+  email         String         @unique
+  password      String
+  role          Role           @relation(fields: [role_id], references: [Id])
+  role_id       Int
+  profile       User_Profile?
+  Kedai_Profile Kedai_Profile?
 }
 
 model User_Profile {
@@ -27,6 +28,16 @@ model User_Profile {
   birth_date DateTime?
   address    String?
   phone      String?   @db.VarChar(15)
+}
+
+model Kedai_Profile {
+  Id          String  @id @unique
+  user        User    @relation(fields: [Id], references: [Id])
+  name        String  @unique
+  picture     String?
+  description String
+  address     String
+  phone       String  @db.VarChar(15)
 }
 
 model Role {
