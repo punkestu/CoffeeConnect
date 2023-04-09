@@ -7,14 +7,14 @@ const {
   notExist,
 } = require("../middleware/auth");
 const { register, login } = require("../controller/auth");
-const errorHandler = require("../middleware/errorHandle");
+const {api} = require("../middleware/errorHandle");
 
 router.post(
   "/register",
   [required.fullname, required.username, required.email, required.password],
   [struct.username, struct.email, struct.password],
   [notExist.username, notExist.email],
-  errorHandler,
+  api,
   register.pembeli
 );
 
@@ -23,7 +23,7 @@ router.post(
   [required.fullname, required.username, required.email, required.password],
   [struct.username, struct.email, struct.password],
   [notExist.username, notExist.email],
-  errorHandler,
+  api,
   register.kedai
 );
 
@@ -33,7 +33,7 @@ router.post(
   [struct.username, struct.password],
   [exist.username],
   [match.userPassword],
-  errorHandler,
+  api,
   login
 );
 
