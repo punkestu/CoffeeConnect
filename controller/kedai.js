@@ -2,8 +2,11 @@ const {kedai_Profile} = require("../prisma/db");
 const {sign} = require("jsonwebtoken");
 
 module.exports = {
+    getMy: async function (req, res) {
+        res.status(200).send({data: {Kedai: req.Kedai}});
+    },
     create: async function (req, res) {
-        try{
+        try {
             kedai_Profile.create({
                 data: {
                     user: {
@@ -19,15 +22,15 @@ module.exports = {
             }).then(
                 (Kedai) => {
                     delete Kedai.Id;
-                    res.status(200).send({ data: { Kedai } });
+                    res.status(200).send({data: {Kedai}});
                 },
                 (err) => {
                     console.log("error");
-                    res.status(500).send({ errors: err });
+                    res.status(500).send({errors: err});
                 }
             )
-        }catch (e) {
-            res.status(500).send({ errors: e });
+        } catch (e) {
+            res.status(500).send({errors: e});
         }
     }
 };

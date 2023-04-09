@@ -11,4 +11,10 @@ router.post("/",
     kedaiController.create
 );
 
+router.get("/",
+    isAuth,
+    [userIs.haveKedai],
+    kedaiController.getMy
+);
+
 module.exports = router;

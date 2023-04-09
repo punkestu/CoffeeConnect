@@ -19,6 +19,23 @@ module.exports = {
             } catch (e) {
                 return res.status(500).send({errors: e});
             }
+        },
+        haveKedai: async function (req, res, next) {
+            try {
+                req.Kedai = await kedai_Profile.findFirst({
+                    where: {
+                        user: {
+                            Id: req.User.Id
+                        }
+                    }
+                });
+                if (!req.Kedai) {
+                    return res.status(404).send({errors: {msg: "Kedai tidak ada"}});
+                }
+                next();
+            } catch (e) {
+                return res.status(500).send({errors: e});
+            }
         }
     },
     struct: {
