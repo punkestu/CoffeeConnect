@@ -516,16 +516,14 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.font-bold {
-  font-weight: 700;
+.flex {
+  display: flex;
 }
 
-.text-red-50 {
-  --tw-text-opacity: 1;
-  color: rgb(254 242 242 / var(--tw-text-opacity));
+.gap-5 {
+  gap: 1.25rem;
 }
 
-.text-red-900 {
-  --tw-text-opacity: 1;
-  color: rgb(127 29 29 / var(--tw-text-opacity));
+.border {
+  border-width: 1px;
 }

@@ -1,5 +1,4 @@
 const {validationResult} = require("express-validator");
-const {sign} = require("jsonwebtoken");
 
 module.exports = {
     api: function (req, res, next) {
