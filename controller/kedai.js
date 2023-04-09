@@ -1,5 +1,4 @@
 const {kedai_Profile} = require("../prisma/db");
-const {sign} = require("jsonwebtoken");
 
 module.exports = {
     getMy: async function (req, res) {
