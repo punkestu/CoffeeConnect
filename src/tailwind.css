@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn{
+    @apply py-2 px-4 rounded-lg
+}
+
+.btn-primary{
+    @apply bg-blue-300 text-white
+}
+
+.input-type{
+    @apply border px-2 py-1 rounded-lg
+}
+
+.error-msg{
+    @apply text-red-500 text-sm
+}
+
+h1{
+    @apply text-4xl font-semibold
+}
