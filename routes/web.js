@@ -1,5 +1,5 @@
 const {required, struct, exist, match, notExist} = require("../middleware/auth");
-const {web, api} = require("../middleware/errorHandle");
+const {web} = require("../middleware/errorHandle");
 const router = require("express").Router();
 
 router.get("/", function (req, res) {
