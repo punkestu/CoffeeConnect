@@ -50,6 +50,9 @@ module.exports = {
                 where: {
                     username,
                 },
+                include: {
+                    role: true
+                }
             });
             if (!req.User) {
                 throw new Error("Username tidak terdaftar");

@@ -1,11 +1,20 @@
-const { validationResult } = require("express-validator");
+const {validationResult} = require("express-validator");
 
-module.exports = function(req,res,next){
-      const Errors = validationResult(req);
-      if(Errors.isEmpty()){
+module.exports = {
+    api: function (req, res, next) {
+        const Errors = validationResult(req);
+        if (Errors.isEmpty()) {
             next();
-      }else{
+        } else {
             const errors = Errors.mapped();
             return res.status(400).send({errors});
-      }
+        }
+    },
+    web: function (req, _, next) {
+        const Errors = validationResult(req);
+        if (!Errors.isEmpty()) {
+            req.session.error = Errors.mapped();
+        }
+        next();
+    },
 }
