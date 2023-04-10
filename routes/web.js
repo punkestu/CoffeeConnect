@@ -1,10 +1,15 @@
-const {required, struct, exist, match} = require("../middleware/auth");
-const {web} = require("../middleware/errorHandle");
+const {required, struct, exist, match, notExist} = require("../middleware/auth");
+const {web, api} = require("../middleware/errorHandle");
 const router = require("express").Router();
 
 router.get("/", function (req, res) {
     res.render("index", {user: req.session.user});
 });
+
+router.get("/logout", function(req,res){
+    req.session.destroy();
+    res.redirect("/login");
+})
 
 router.get("/login", function (req, res) {
     if (!req.session.user) {
@@ -13,11 +18,6 @@ router.get("/login", function (req, res) {
         return res.redirect("/");
     }
 });
-
-router.get("/logout", function(req,res){
-    req.session.destroy();
-    res.redirect("/login");
-})
 
 router.post("/login",
     [required.username, required.password],
@@ -36,5 +36,15 @@ router.post("/login",
         }
     }
 );
+
+router.get("/register",
+    [required.fullname, required.username, required.email, required.password],
+    [struct.username, struct.email, struct.password],
+    [notExist.username, notExist.email],
+    web,
+    function (req, res) {
+        return res.render("register", {errors: req.session.errors});
+    }
+)
 
 module.exports = router;
