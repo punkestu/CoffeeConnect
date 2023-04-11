@@ -1,10 +1,10 @@
 const React = require("react");
 const Layout = require("../layout");
 
-module.exports = function ({errors, payload, endpoint}) {
+module.exports = function ({errors, payload, endpoint, role}) {
     return (<Layout title={"Register"}>
         <div>
-            <h1 className={"text-center my-3"}>Register Customer</h1>
+            <h1 className={"text-center my-3"}>Register {role || "Customer"}</h1>
             <form action={endpoint} method={"POST"} className={"flex flex-col items-center gap-2 my-2"}>
                 <input
                     type="text"
