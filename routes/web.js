@@ -1,10 +1,10 @@
 const {required, struct, exist, match, notExist, encrypt} = require("../middleware/auth");
 const {web} = require("../middleware/errorHandle");
-const {user, user_Profile} = require("../prisma/db");
+const {user, user_Profile, kedai_Profile} = require("../prisma/db");
 const router = require("express").Router();
 
 router.get("/", function (req, res) {
-    res.render("index", {user: req.session.user});
+    res.render("index", {user: req.session.user, kedai: req.session.user && req.session.user.Kedai_Profile});
 });
 
 router.get("/logout", function (req, res) {
@@ -128,9 +128,7 @@ router.post("/registerpenjual",
     web,
     encrypt.password,
     function (req, res) {
-        console.log(req.body.password);
         if (req.session.error) {
-            console.log(req.session.error);
             req.session.payload = req.body;
             return res.redirect("/registerpenjual");
         }
@@ -158,7 +156,7 @@ router.post("/registerpenjual",
             delete req.session.error;
             req.session.user = User;
             return res.redirect("/");
-        }, err => {
+        }, _ => {
             return res.redirect("/registerpenjual");
         })
     }
@@ -182,7 +180,6 @@ router.post("/p/:username",
     web,
     function (req, res) {
         if (req.session.error) {
-            console.log(req.session.error);
             return res.redirect(`/editProfile`);
         }
         user_Profile.upsert({
@@ -227,13 +224,58 @@ router.get("/editProfile", function (req, res) {
 })
 
 router.get("/k/:namakedai", function (req, res) {
-
+    kedai_Profile.findFirst({
+        where: {
+            name: req.params.namakedai
+        },
+        include: {
+            user: true
+        }
+    }).then(Kedai => {
+        return res.render("kedai/profile", {user: Kedai.user, kedai: Kedai, actUser: req.session.user});
+    }, _ => {
+        return res.send(404);
+    });
 });
 
-router.get("/editKedai", function (req, res) {
+router.post("/k",
+    [struct.address, struct.phone],
+    function (req, res) {
     if (req.session.user) {
-        console.log(req.session.user);
-        res.render("kedai/profile", {user: req.session.user, kedai: req.session.user.kedai_Profile, editMode: true});
+        kedai_Profile.upsert({
+            where: {
+                Id: req.session.user.Id
+            },
+            create: {
+                name: req.body.name,
+                address: req.body.address,
+                description: req.body.description,
+                phone: req.body.phone,
+                user: {
+                    connect: {
+                        Id: req.session.user.Id
+                    }
+                }
+            },
+            update: {
+                name: req.body.name,
+                address: req.body.address,
+                description: req.body.description,
+                phone: req.body.phone,
+            }
+        }).then(kProfile => {
+            res.redirect(`/k/${kProfile.name}`);
+        }, _ => {
+            res.redirect("/editkedai");
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+router.get("/editkedai", function (req, res) {
+    if (req.session.user) {
+        res.render("kedai/profile", {user: req.session.user, kedai: req.session.user.Kedai_Profile, editMode: true});
     } else {
         res.redirect("/login");
     }
