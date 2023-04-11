@@ -1,6 +1,6 @@
 const {body} = require("express-validator");
 const {user} = require("../prisma/db");
-const {compare} = require("bcrypt");
+const {compare, hash} = require("bcrypt");
 const {verify} = require("jsonwebtoken");
 
 module.exports = {
@@ -33,6 +33,18 @@ module.exports = {
             .withMessage("Password minimal 8 karakter")
             .isAlphanumeric()
             .withMessage("Password harus terdiri dari huruf dan angka"),
+        address: body("address").isString().withMessage("Alamat harus berbentuk String"),
+        phone: body("phone").isLength({max: 14}).isMobilePhone("id-ID").withMessage("Nomor tidak valid"),
+        birthdate: body("birthdate")
+            .isISO8601('yyyy-mm-dd')
+            .withMessage("Tanggal tidak valid")
+    },
+    encrypt: {
+      password: async function(req,_,next){
+          req.body.password = await hash(req.body.password, process.env.SALT);
+          console.log(req.body.password);
+          next();
+      }
     },
     match: {
         userPassword: body("password").custom(async (password, {req}) => {
@@ -51,7 +63,8 @@ module.exports = {
                     username,
                 },
                 include: {
-                    role: true
+                    role: true,
+                    Kedai_Profile: true
                 }
             });
             if (!req.User) {

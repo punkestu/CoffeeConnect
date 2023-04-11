@@ -14,8 +14,9 @@ module.exports = function ({user, kedai}) {
                 ) : (
                     <>
                         <a href={`/p/${user.username}`}>Profile</a>
-                        {!kedai && user.role.role_name === "Penjual" &&
-                            <a href={"/registerkedai"}>Profile kedai</a>
+                        {kedai ?
+                            <a href={`/k/${user.Kedai_Profile.name}`}>Profile kedai</a> :
+                            <a href={`/editKedai`}>Profile kedai</a>
                         }
                         <a href={"/logout"}>Logout</a>
                     </>
