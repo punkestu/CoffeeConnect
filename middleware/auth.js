@@ -34,17 +34,18 @@ module.exports = {
             .isAlphanumeric()
             .withMessage("Password harus terdiri dari huruf dan angka"),
         address: body("address").isString().withMessage("Alamat harus berbentuk String"),
-        phone: body("phone").isLength({max: 14}).isMobilePhone("id-ID").withMessage("Nomor tidak valid"),
+        phone: body("phone").optional({checkFalsy: true}).isLength({max: 14}).isMobilePhone("id-ID").withMessage("Nomor tidak valid"),
         birthdate: body("birthdate")
+            .optional({checkFalsy: true})
             .isISO8601('yyyy-mm-dd')
             .withMessage("Tanggal tidak valid")
     },
     encrypt: {
-      password: async function(req,_,next){
-          req.body.password = await hash(req.body.password, process.env.SALT);
-          console.log(req.body.password);
-          next();
-      }
+        password: async function (req, _, next) {
+            req.body.password = await hash(req.body.password, process.env.SALT);
+            console.log(req.body.password);
+            next();
+        }
     },
     match: {
         userPassword: body("password").custom(async (password, {req}) => {
@@ -64,7 +65,8 @@ module.exports = {
                 },
                 include: {
                     role: true,
-                    Kedai_Profile: true
+                    Kedai_Profile: true,
+                    profile: true
                 }
             });
             if (!req.User) {
