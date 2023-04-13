@@ -7,11 +7,19 @@
 }
 
 .btn-primary{
-    @apply bg-blue-300 text-white
+    @apply bg-blue-600 text-white
+}
+
+.btn-danger{
+    @apply bg-red-600 text-white
+}
+
+.link{
+    @apply text-blue-600 underline
 }
 
 .input-type{
-    @apply border px-2 py-1 rounded-lg my-2
+    @apply border-2 border-slate-400 p-2 rounded-lg my-2
 }
 
 .error-msg{

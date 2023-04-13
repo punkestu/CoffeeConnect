@@ -4,7 +4,7 @@ const {user, user_Profile, kedai_Profile} = require("../prisma/db");
 const router = require("express").Router();
 
 router.get("/", function (req, res) {
-    res.render("index", {user: req.session.user, kedai: req.session.user && req.session.user.Kedai_Profile});
+    res.render("index", {useHeader: true, user: req.session.user});
 });
 
 router.get("/logout", function (req, res) {
@@ -37,6 +37,9 @@ router.post("/login",
         }
         if (req.User) {
             delete req.session.error;
+            if (req.User.profile.birth_date) {
+                req.User.profile.birth_date = req.User.profile.birth_date.toISOString().split("T")[0];
+            }
             req.session.user = req.User;
             return res.redirect("/");
         }
@@ -53,7 +56,8 @@ router.get("/register",
             res.render("user/register", {
                 errors,
                 payload,
-                endpoint: "/register"
+                endpoint: "/register",
+                role: "Pembeli"
             });
         } else {
             return res.redirect("/");
@@ -103,10 +107,6 @@ router.post("/register",
 );
 
 router.get("/registerpenjual",
-    [required.fullname, required.username, required.email, required.password],
-    [struct.username, struct.email, struct.password],
-    [notExist.username, notExist.email],
-    web,
     function (req, res) {
         if (!req.session.user) {
             const errors = req.session.error;
@@ -171,15 +171,16 @@ router.get("/p/:username", function (req, res) {
             profile: true
         }
     }).then(User => {
-        res.render("user/profile", {profile: User, user: req.session.user || {}});
+        res.render("user/profile", {useHeader: true, profile: User, user: req.session.user});
     })
 });
 
-router.post("/p/:username",
+router.post("/p",
     [struct.birthdate, struct.address, struct.phone],
     web,
     function (req, res) {
         if (req.session.error) {
+            req.session.payload = req.body;
             return res.redirect(`/editProfile`);
         }
         user_Profile.upsert({
@@ -189,7 +190,8 @@ router.post("/p/:username",
             update: {
                 address: req.body.address,
                 birth_date: new Date(req.body.birthdate),
-                phone: req.body.phone
+                phone: req.body.phone,
+                bio: req.body.bio
             },
             create: {
                 user: {
@@ -199,25 +201,26 @@ router.post("/p/:username",
                 },
                 address: req.body.address,
                 birth_date: new Date(req.body.birthdate),
-                phone: req.body.phone
+                phone: req.body.phone,
+                bio: req.body.bio
             }
-        }).then(_ => {
+        }).then(Profile => {
+            if(Profile.birth_date){
+                Profile.birth_date = Profile.birth_date.toISOString().split("T")[0];
+            }
+            req.session.user.profile = Profile;
             res.redirect(`/p/${req.session.user.username}`);
         })
     })
 
-router.get("/editProfile", function (req, res) {
+router.get("/editprofile", function (req, res) {
     if (req.session.user) {
-        user.findFirst({
-            where: {
-                username: req.session.user.username
-            },
-            include: {
-                profile: true
-            }
-        }).then(User => {
-            res.render("user/profile", {profile: User, user: req.session.user || {}, editMode: true});
-        })
+        const errors = req.session.error;
+        const payload = req.session.payload;
+        delete req.session.error;
+        delete req.session.payload;
+        console.log(req.session.user);
+        res.render("user/profile", {useHeader: true, user: req.session.user, editMode: true, errors, payload});
     } else {
         res.redirect("/login");
     }
@@ -232,7 +235,7 @@ router.get("/k/:namakedai", function (req, res) {
             user: true
         }
     }).then(Kedai => {
-        return res.render("kedai/profile", {user: Kedai.user, kedai: Kedai, actUser: req.session.user});
+        return res.render("kedai/profile", {useHeader: true, user: req.session.user, kedai: Kedai});
     }, _ => {
         return res.send(404);
     });
@@ -241,41 +244,51 @@ router.get("/k/:namakedai", function (req, res) {
 router.post("/k",
     [struct.address, struct.phone],
     function (req, res) {
-    if (req.session.user) {
-        kedai_Profile.upsert({
-            where: {
-                Id: req.session.user.Id
-            },
-            create: {
-                name: req.body.name,
-                address: req.body.address,
-                description: req.body.description,
-                phone: req.body.phone,
-                user: {
-                    connect: {
-                        Id: req.session.user.Id
+        if (req.session.user) {
+            kedai_Profile.upsert({
+                where: {
+                    Id: req.session.user.Id
+                },
+                create: {
+                    name: req.body.name,
+                    address: req.body.address,
+                    description: req.body.description,
+                    phone: req.body.phone,
+                    user: {
+                        connect: {
+                            Id: req.session.user.Id
+                        }
                     }
+                },
+                update: {
+                    name: req.body.name,
+                    address: req.body.address,
+                    description: req.body.description,
+                    phone: req.body.phone,
                 }
-            },
-            update: {
-                name: req.body.name,
-                address: req.body.address,
-                description: req.body.description,
-                phone: req.body.phone,
-            }
-        }).then(kProfile => {
-            res.redirect(`/k/${kProfile.name}`);
-        }, _ => {
-            res.redirect("/editkedai");
-        });
-    } else {
-        res.redirect("/login");
-    }
-});
+            }).then(kProfile => {
+                req.session.user.Kedai_Profile = kProfile;
+                res.redirect(`/k/${kProfile.name}`);
+            }, _ => {
+                res.redirect("/editkedai");
+            });
+        } else {
+            res.redirect("/login");
+        }
+    });
 
-router.get("/editkedai", function (req, res) {
+router.get("/editkedai", async function (req, res) {
     if (req.session.user) {
-        res.render("kedai/profile", {user: req.session.user, kedai: req.session.user.Kedai_Profile, editMode: true});
+        if (req.session.user.role.role_name === "Penjual") {
+            res.render("kedai/profile", {
+                useHeader: true,
+                user: req.session.user,
+                kedai: req.session.user.Kedai_Profile,
+                editMode: true
+            });
+        } else {
+            res.redirect("/");
+        }
     } else {
         res.redirect("/login");
     }
