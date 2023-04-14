@@ -24,7 +24,6 @@ module.exports = {
                     res.status(200).send({data: {Kedai}});
                 },
                 (err) => {
-                    console.log("error");
                     res.status(500).send({errors: err});
                 }
             )

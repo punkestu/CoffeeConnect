@@ -1,15 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 const session = require('express-session');
-const logger = require("morgan");
 
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(logger("dev"));
+app.use(express.urlencoded({extended: false}));
+if (process.env.NODE_ENV === "development") {
+    console.log(process.env.NODE_ENV);
+    const logger = require("morgan");
+    app.use(logger("dev"));
+}
 
 const webRoutes = require("./routes/web");
 const apiRoutes = require("./routes/api");
@@ -36,4 +39,4 @@ app.use(session({
 }));
 app.use("/", webRoutes);
 
-const _ = app.listen(3000, ()=>console.log("listening at http://localhost:3000"));
+const _ = app.listen(3000, () => console.log("listening at http://localhost:3000"));

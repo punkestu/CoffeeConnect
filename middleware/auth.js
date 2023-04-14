@@ -43,7 +43,6 @@ module.exports = {
     encrypt: {
         password: async function (req, _, next) {
             req.body.password = await hash(req.body.password, process.env.SALT);
-            console.log(req.body.password);
             next();
         }
     },
