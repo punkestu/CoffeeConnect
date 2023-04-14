@@ -68,7 +68,8 @@ module.exports = {
                 name: req.params.namakedai
             },
             include: {
-                user: true
+                user: true,
+                Produk: true
             }
         }).then(Kedai => {
             return res.render("kedai/profile", {useHeader: true, user: req.session.user, kedai: Kedai});
@@ -84,6 +85,21 @@ module.exports = {
                     user: req.session.user,
                     kedai: req.session.user.Kedai_Profile,
                     editMode: true
+                });
+            } else {
+                res.redirect("/");
+            }
+        } else {
+            res.redirect("/login");
+        }
+    },
+    formproduk: function (req,res) {
+        if (req.session.user) {
+            if (req.session.user.role.role_name === "Penjual") {
+                res.render("kedai/formproduk", {
+                    useHeader: true,
+                    user: req.session.user,
+                    kedai: req.session.user.Kedai_Profile
                 });
             } else {
                 res.redirect("/");

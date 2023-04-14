@@ -4,6 +4,7 @@ module.exports = {
     create: function (req, res) {
         produk.create({
             data: {
+                picture: req.body.picture,
                 name: req.body.name,
                 price: parseInt(req.body.price),
                 description: req.body.description,

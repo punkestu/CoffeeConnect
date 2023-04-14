@@ -19,7 +19,7 @@
 }
 
 .input-type{
-    @apply border-2 border-slate-400 p-2 rounded-lg my-2
+    @apply border-2 border-slate-400 p-2 rounded-lg my-2 resize-none
 }
 
 .error-msg{

@@ -1,22 +1,61 @@
 <div class="mt-2 p-2">
     {{#unless editMode}}
-        <div class="flex items-end gap-3 mb-2">
-            <h1>{{kedai.name}}</h1>
-            {{#ifEq kedai.user.username user.username}}
-                {{#unless editMode}}
+        <div class="flex items-end justify-between gap-3 mb-2">
+            <div class="flex items-end gap-3 mb-2">
+                <h1>{{kedai.name}}</h1>
+                {{#ifEq kedai.user.username user.username}}
                     <a href="/editkedai" class="link">Edit</a>
-                {{/unless}}
+                {{/ifEq}}
+            </div>
+            {{#ifEq kedai.user.username user.username}}
+                <a href="/formproduk" class="btn btn-primary"><span class="text-lg font-bold">+</span> Create Menu</a>
             {{/ifEq}}
         </div>
         <div class="flex flex-col gap-2 ps-5">
-            <a href="http://wa.me/{{kedai.phone}}" class="link">Contact me: {{kedai.phone}}</a>
-            <div class="flex flex-col items-center lg:flex-row gap-2">
-                <p>{{kedai.description}}</p>
-                <button class="rounded px-2 bg-slate-300">...</button>
+            <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
+            <div class="flex flex-col items-center gap-2">
+                <p id="bio" class="text-left w-full"></p>
+                <button id="expandBtn" class="rounded px-2 bg-slate-300 text-slate-700 text w-1/3" onclick="expand()">
+                    expand
+                </button>
             </div>
             <p class="text-slate-600">{{kedai.address}}</p>
         </div>
         <hr class="mt-2"/>
+        <div class="mt-2 gap-2 flex flex-wrap">
+            {{#eachProduk kedai.name kedai.Produk}}
+                <a href="/produk/{{kedai}}/{{name}}" class="flex flex-col items-start w-[49.385%] lg:w-[24.55%] p-3 border rounded-lg">
+                    <button class="self-end">
+                        <span class="material-symbols-rounded">more_vert</span>
+                    </button>
+                    <div class="w-full h-56 lg:h-64 flex bg-blue-500 mb-2 border">
+                        <img class="object-cover" src="/picture/{{picture}}" alt="">
+                    </div>
+                    <h1 class="text-xl font-bold capitalize">{{name}}</h1>
+                    <h2 class="text-slate-500 text-sm">Rp. {{price}}</h2>
+                    <p>{{substr "sadkjhsakjhdkasjdhkjsadhasdjaksjdhsadasdjhaksjdh" 37}} ...</p>
+                </a>
+            {{/eachProduk}}
+        </div>
+        <script>
+            const bio = "{{kedai.description}}";
+            var isExpand = false;
+
+            function expand() {
+                const $bio = $("#bio");
+                const $expandBtn = $("#expandBtn");
+                if (isExpand) {
+                    $bio.html(bio);
+                    $expandBtn.html("close");
+                } else {
+                    $bio.html(bio.substring(0, 100) + "...");
+                    $expandBtn.html("expand");
+                }
+                isExpand = !isExpand;
+            }
+
+            expand();
+        </script>
     {{/unless}}
     {{#if editMode}}
         <form action="/k" method="POST" class="flex flex-col gap-2">

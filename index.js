@@ -31,6 +31,8 @@ app.set("view engine", "hbs");
 app.set("views", "./views");
 
 app.use(express.static("public"));
+app.use("/flowbite", express.static(__dirname + "/node_modules/flowbite/dist/"));
+app.use("/picture", express.static(__dirname + "/storage/"));
 
 app.use(session({
     secret: process.env.JWT_KEY,
