@@ -1,4 +1,5 @@
-const {produk} = require("../prisma/db");
+const {produk, kedai_Profile} = require("../prisma/db");
+const {kedaiprofile} = require("./view");
 
 module.exports = {
     create: function (req, res) {
@@ -14,8 +15,26 @@ module.exports = {
                     }
                 }
             }
-        }).then(_=>{
+        }).then(_ => {
             res.redirect(`/k/${req.session.user.Kedai_Profile.name}`);
         });
+    },
+    delete: function (req, res) {
+        kedai_Profile.findFirst({
+            where: {
+                name: req.params.kedaiName
+            }
+        }).then(Kedai => {
+            produk.delete({
+                where: {
+                    Id_kedaiId: {
+                        Id: parseInt(req.params.produkId),
+                        kedaiId: Kedai.Id
+                    }
+                },
+            }).then(_=>{
+                res.redirect(`/k/${Kedai.name}`);
+            })
+        })
     }
 };

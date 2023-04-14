@@ -63,6 +63,7 @@ router.post("/k",
 router.get("/editkedai", viewCtrl.editkedaiprofile);
 
 router.post("/produk", produkMid.save.picture, produkCtrl.create);
+router.get("/delete/:kedaiName/:produkId", produkCtrl.delete);
 router.get("/formproduk", viewCtrl.formproduk);
 
 module.exports = router;

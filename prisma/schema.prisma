@@ -43,13 +43,15 @@ model Kedai_Profile {
 }
 
 model Produk {
-  Id          Int           @id @default(autoincrement())
+  Id          Int           @default(autoincrement())
   kedai       Kedai_Profile @relation(fields: [kedaiId], references: [Id])
   kedaiId     String
   name        String
   price       Int
   description String
   picture     String?
+
+  @@id([Id, kedaiId])
 }
 
 model Role {
