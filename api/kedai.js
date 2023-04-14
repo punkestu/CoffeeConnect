@@ -10,14 +10,14 @@ router.post("/",
     [struct.phone],
     [notExist.name],
     api,
-    kedaiController.create
+    kedaiController.api.create
 );
 
 router.get("/",
     isAuth,
     [userIs.haveKedai],
     api,
-    kedaiController.getMy
+    kedaiController.api.getMy
 );
 
 module.exports = router;

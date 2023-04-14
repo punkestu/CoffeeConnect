@@ -1,6 +1,9 @@
 const {required, struct, exist, match, notExist, encrypt} = require("../middleware/auth");
 const {web} = require("../middleware/errorHandle");
-const {user, user_Profile, kedai_Profile} = require("../prisma/db");
+
+const viewCtrl = require("../controller/view");
+const authCtrl = require("../controller/auth");
+const kedaiCtrl = require("../controller/kedai");
 const router = require("express").Router();
 
 router.get("/", function (req, res) {
@@ -12,285 +15,49 @@ router.get("/logout", function (req, res) {
     res.redirect("/login");
 })
 
-router.get("/login", function (req, res) {
-    if (!req.session.user) {
-        const errors = req.session.error;
-        const payload = req.session.payload;
-        delete req.session.error;
-        delete req.session.payload;
-        res.render("user/login", {errors, payload});
-    } else {
-        return res.redirect("/");
-    }
-});
-
+router.get("/login", viewCtrl.login);
 router.post("/login",
     [required.username, required.password],
     [struct.username, struct.password],
     [exist.username],
     [match.userPassword],
     web,
-    function (req, res) {
-        if (req.session.error) {
-            req.session.payload = req.body;
-            return res.redirect("/login");
-        }
-        if (req.User) {
-            delete req.session.error;
-            if (req.User.profile.birth_date) {
-                req.User.profile.birth_date = req.User.profile.birth_date.toISOString().split("T")[0];
-            }
-            req.session.user = req.User;
-            return res.redirect("/");
-        }
-    }
+    authCtrl.web.login
 );
 
-router.get("/register",
-    function (req, res) {
-        if (!req.session.user) {
-            const errors = req.session.error;
-            const payload = req.session.payload;
-            delete req.session.error;
-            delete req.session.payload;
-            res.render("user/register", {
-                errors,
-                payload,
-                endpoint: "/register",
-                role: "Pembeli"
-            });
-        } else {
-            return res.redirect("/");
-        }
-    }
-)
-
+router.get("/register", viewCtrl.register);
 router.post("/register",
     [required.fullname, required.username, required.email, required.password],
     [struct.username, struct.email, struct.password],
     [notExist.username, notExist.email],
     web,
     encrypt.password,
-    function (req, res) {
-        if (req.session.error) {
-            req.session.payload = req.body;
-            return res.redirect("/register");
-        }
-        user.create({
-            data: {
-                full_name: req.body.fullname,
-                username: req.body.username,
-                email: req.body.email,
-                password: req.body.password,
-                role: {
-                    connectOrCreate: {
-                        create: {
-                            role_name: "Pembeli"
-                        },
-                        where: {
-                            role_name: "Pembeli"
-                        }
-                    }
-                }
-            },
-            include: {
-                role: true
-            }
-        }).then(User => {
-            delete req.session.error;
-            req.session.user = User;
-            return res.redirect("/");
-        }, _ => {
-            return res.redirect("/register");
-        })
-    }
+    authCtrl.web.register
 );
 
-router.get("/registerpenjual",
-    function (req, res) {
-        if (!req.session.user) {
-            const errors = req.session.error;
-            const payload = req.session.payload;
-            delete req.session.error;
-            delete req.session.payload;
-            return res.render("user/register",
-                {errors, payload, endpoint: "/registerpenjual", role: "Penjual"});
-        } else {
-            return res.redirect("/");
-        }
-    }
-);
-
+router.get("/registerpenjual", viewCtrl.registerpenjual);
 router.post("/registerpenjual",
     [required.fullname, required.username, required.email, required.password],
     [struct.username, struct.email, struct.password],
     [notExist.username, notExist.email],
     web,
     encrypt.password,
-    function (req, res) {
-        if (req.session.error) {
-            req.session.payload = req.body;
-            return res.redirect("/registerpenjual");
-        }
-        user.create({
-            data: {
-                full_name: req.body.fullname,
-                username: req.body.username,
-                email: req.body.email,
-                password: req.body.password,
-                role: {
-                    connectOrCreate: {
-                        create: {
-                            role_name: "Penjual"
-                        },
-                        where: {
-                            role_name: "Penjual"
-                        }
-                    }
-                }
-            },
-            include: {
-                role: true
-            }
-        }).then(User => {
-            delete req.session.error;
-            req.session.user = User;
-            return res.redirect("/");
-        }, _ => {
-            return res.redirect("/registerpenjual");
-        })
-    }
+    authCtrl.web.registerpenjual
 );
 
-router.get("/p/:username", function (req, res) {
-    user.findFirst({
-        where: {
-            username: req.params.username
-        },
-        include: {
-            profile: true
-        }
-    }).then(User => {
-        res.render("user/profile", {useHeader: true, profile: User, user: req.session.user});
-    })
-});
-
+router.get("/p/:username", viewCtrl.userprofile);
 router.post("/p",
     [struct.birthdate, struct.address, struct.phone],
     web,
-    function (req, res) {
-        if (req.session.error) {
-            req.session.payload = req.body;
-            return res.redirect(`/editProfile`);
-        }
-        user_Profile.upsert({
-            where: {
-                Id: req.session.user.Id
-            },
-            update: {
-                address: req.body.address,
-                birth_date: new Date(req.body.birthdate),
-                phone: req.body.phone,
-                bio: req.body.bio
-            },
-            create: {
-                user: {
-                    connect: {
-                        Id: req.session.user.Id
-                    }
-                },
-                address: req.body.address,
-                birth_date: new Date(req.body.birthdate),
-                phone: req.body.phone,
-                bio: req.body.bio
-            }
-        }).then(Profile => {
-            if(Profile.birth_date){
-                Profile.birth_date = Profile.birth_date.toISOString().split("T")[0];
-            }
-            req.session.user.profile = Profile;
-            res.redirect(`/p/${req.session.user.username}`);
-        })
-    })
+    authCtrl.web.postprofile
+);
+router.get("/editprofile", viewCtrl.edituserprofile);
 
-router.get("/editprofile", function (req, res) {
-    if (req.session.user) {
-        const errors = req.session.error;
-        const payload = req.session.payload;
-        delete req.session.error;
-        delete req.session.payload;
-        res.render("user/profile", {useHeader: true, user: req.session.user, editMode: true, errors, payload});
-    } else {
-        res.redirect("/login");
-    }
-})
-
-router.get("/k/:namakedai", function (req, res) {
-    kedai_Profile.findFirst({
-        where: {
-            name: req.params.namakedai
-        },
-        include: {
-            user: true
-        }
-    }).then(Kedai => {
-        return res.render("kedai/profile", {useHeader: true, user: req.session.user, kedai: Kedai});
-    }, _ => {
-        return res.send(404);
-    });
-});
-
+router.get("/k/:namakedai", viewCtrl.kedaiprofile);
 router.post("/k",
     [struct.address, struct.phone],
-    function (req, res) {
-        if (req.session.user) {
-            kedai_Profile.upsert({
-                where: {
-                    Id: req.session.user.Id
-                },
-                create: {
-                    name: req.body.name,
-                    address: req.body.address,
-                    description: req.body.description,
-                    phone: req.body.phone,
-                    user: {
-                        connect: {
-                            Id: req.session.user.Id
-                        }
-                    }
-                },
-                update: {
-                    name: req.body.name,
-                    address: req.body.address,
-                    description: req.body.description,
-                    phone: req.body.phone,
-                }
-            }).then(kProfile => {
-                req.session.user.Kedai_Profile = kProfile;
-                res.redirect(`/k/${kProfile.name}`);
-            }, _ => {
-                res.redirect("/editkedai");
-            });
-        } else {
-            res.redirect("/login");
-        }
-    });
-
-router.get("/editkedai", async function (req, res) {
-    if (req.session.user) {
-        if (req.session.user.role.role_name === "Penjual") {
-            res.render("kedai/profile", {
-                useHeader: true,
-                user: req.session.user,
-                kedai: req.session.user.Kedai_Profile,
-                editMode: true
-            });
-        } else {
-            res.redirect("/");
-        }
-    } else {
-        res.redirect("/login");
-    }
-});
+    kedaiCtrl.web.postkedai
+);
+router.get("/editkedai", viewCtrl.editkedaiprofile);
 
 module.exports = router;
