@@ -219,7 +219,6 @@ router.get("/editprofile", function (req, res) {
         const payload = req.session.payload;
         delete req.session.error;
         delete req.session.payload;
-        console.log(req.session.user);
         res.render("user/profile", {useHeader: true, user: req.session.user, editMode: true, errors, payload});
     } else {
         res.redirect("/login");
