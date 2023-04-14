@@ -20,21 +20,32 @@ module.exports = {
         });
     },
     delete: function (req, res) {
-        kedai_Profile.findFirst({
-            where: {
-                name: req.params.kedaiName
-            }
-        }).then(Kedai => {
-            produk.delete({
+        if (req.session.user) {
+            kedai_Profile.findFirst({
                 where: {
-                    Id_kedaiId: {
-                        Id: parseInt(req.params.produkId),
-                        kedaiId: Kedai.Id
+                    name: req.params.kedaiName,
+                    user: {
+                        Id: req.session.user.Id
                     }
+                }
+            }).then(Kedai => {
+                    produk.delete({
+                        where: {
+                            Id_kedaiId: {
+                                Id: parseInt(req.params.produkId),
+                                kedaiId: Kedai.Id
+                            }
+                        },
+                    }).then(_ => {
+                        res.redirect(`/k/${Kedai.name}`);
+                    })
                 },
-            }).then(_=>{
-                res.redirect(`/k/${Kedai.name}`);
-            })
-        })
+                _ => {
+                    res.redirect(`/k/${req.params.kedaiName}`);
+                }
+            );
+        } else {
+            res.redirect("/login");
+        }
     }
 };

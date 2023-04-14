@@ -10,8 +10,8 @@ module.exports = {
     substr: (text, len) => {
         return new Handlebars.SafeString(text.substring(0,len));
     },
-    eachProduk: (kedai, produks, option)=>{
-        const result = produks.map(produk=>option.fn({kedai, ...produk})).join("\n");
+    eachProduk: (context, produks, option)=>{
+        const result = produks.map(produk=>option.fn({...context, ...produk})).join("\n");
         return new Handlebars.SafeString(result);
     }
 };

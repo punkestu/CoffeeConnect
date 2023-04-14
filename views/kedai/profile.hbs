@@ -12,6 +12,7 @@
             {{/ifEq}}
         </div>
         <div class="flex flex-col gap-2 ps-5">
+            <p class="text-slate-600">{{kedai.address}}</p>
             <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
             <div class="flex flex-col items-center gap-2">
                 <p id="bio" class="text-left w-full"></p>
@@ -19,11 +20,10 @@
                     expand
                 </button>
             </div>
-            <p class="text-slate-600">{{kedai.address}}</p>
         </div>
         <hr class="mt-2"/>
         <div class="mt-2 gap-2 flex flex-wrap">
-            {{#eachProduk kedai.name kedai.Produk}}
+            {{#eachProduk this kedai.Produk}}
                 <div class="flex flex-col items-start w-[49.385%] lg:w-[24.55%] border rounded-lg">
                     <div class="p-2 flex justify-end w-full">
                         <button data-dropdown-toggle="dropdown" class="self-end">
@@ -32,15 +32,23 @@
                     </div>
                     <div id="dropdown"
                          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        <ul class="p-2 text-sm text-gray-700 dark:text-gray-200"
                             aria-labelledby="dropdownDefaultButton">
                             <li>
-                                <a href="/delete/{{kedai}}/{{Id}}"
-                                   class="block px-4 py-2 text-red-700">Delete</a>
+                                <button onclick="copyCB('/produk/{{kedai.name}}/{{Id}}')"
+                                        class="block px-4 py-2 text-slate-700">Share
+                                </button>
                             </li>
+                            {{#ifEq user.Id kedai.user.Id}}
+                                <hr>
+                                <li>
+                                    <a href="/delete/{{kedai.name}}/{{Id}}"
+                                       class="block px-4 py-2 text-red-700">Delete</a>
+                                </li>
+                            {{/ifEq}}
                         </ul>
                     </div>
-                    <a href="/produk/{{kedai}}/{{Id}}" class="w-full p-2 pt-0">
+                    <a href="/produk/{{kedai.name}}/{{Id}}" class="w-full p-2 pt-0">
                         <div class="w-full h-56 lg:h-64 flex justify-center bg-slate-100 mb-2 border">
                             <img class="object-cover" src="/picture/{{picture}}" alt="">
                         </div>
@@ -64,6 +72,10 @@
         <script>
             const bio = "{{kedai.description}}";
             var isExpand = false;
+
+            function copyCB(link) {
+                navigator.clipboard.writeText(link);
+            }
 
             function expand() {
                 const $bio = $("#bio");
