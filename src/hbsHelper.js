@@ -1,9 +1,9 @@
 module.exports = {
     ifEq: (a, b, option) => {
         if (a === b) {
-            return option.fn(this);
+            return option.fn(option.data.root);
         } else {
-            return option.inverse(this);
+            return option.inverse(option.data.root);
         }
     }
 };
