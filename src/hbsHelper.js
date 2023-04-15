@@ -1,10 +1,10 @@
 const Handlebars = require("handlebars");
 module.exports = {
-    ifEq: (a, b, option) => {
+    ifEq: (context, a, b, option) => {
         if (a === b) {
-            return option.fn(option.data.root);
+            return option.fn(context);
         } else {
-            return option.inverse(option.data.root);
+            return option.inverse(context);
         }
     },
     substr: (text, len) => {

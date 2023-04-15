@@ -8,6 +8,7 @@ const kedaiCtrl = require("../controller/kedai");
 const produkCtrl = require("../controller/produk");
 const router = require("express").Router();
 
+
 router.get("/", function (req, res) {
     res.render("index", {useHeader: true, user: req.session.user});
 });
@@ -63,7 +64,11 @@ router.post("/k",
 router.get("/editkedai", viewCtrl.editkedaiprofile);
 
 router.post("/produk", produkMid.save.picture, produkCtrl.create);
+router.post("/produk/:produkId", produkMid.update.picture, produkCtrl.update);
+router.get("/editproduk/:produkId", viewCtrl.formeditproduk);
 router.get("/delete/:kedaiName/:produkId", produkCtrl.delete);
 router.get("/formproduk", viewCtrl.formproduk);
+
+router.use(viewCtrl.notfound);
 
 module.exports = router;

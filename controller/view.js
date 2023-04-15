@@ -1,4 +1,4 @@
-const {user, kedai_Profile} = require("../prisma/db");
+const {user, kedai_Profile, produk} = require("../prisma/db");
 module.exports = {
     login: function (req, res) {
         if (!req.session.user) {
@@ -93,10 +93,11 @@ module.exports = {
             res.redirect("/login");
         }
     },
-    formproduk: function (req,res) {
+    formproduk: function (req, res) {
         if (req.session.user) {
             if (req.session.user.role.role_name === "Penjual") {
                 res.render("kedai/formproduk", {
+                    endpoint: "/produk",
                     useHeader: true,
                     user: req.session.user,
                     kedai: req.session.user.Kedai_Profile
@@ -107,5 +108,48 @@ module.exports = {
         } else {
             res.redirect("/login");
         }
+    },
+    formeditproduk: function (req, res) {
+        if (req.session.user) {
+            if (req.session.user.role.role_name === "Penjual") {
+                produk.findFirst({
+                    where: {
+                        Id: parseInt(req.params.produkId),
+                        kedai: {
+                            Id: req.session.user.Id
+                        }
+                    }
+                }).then(Produk => {
+                    if (Produk) {
+                        Produk.picture = "/picture/" + Produk.picture;
+                        res.render("kedai/formproduk", {
+                            endpoint: `/produk/${req.params.produkId}`,
+                            useHeader: true,
+                            user: req.session.user,
+                            kedai: req.session.user.Kedai_Profile,
+                            produk: Produk,
+                            editMode: true
+                        });
+                    } else {
+                        res.render("error/404", {
+                            useHeader: true,
+                            user: req.session.user,
+                            kedai: req.session.user.Kedai_Profile,
+                        })
+                    }
+                });
+            } else {
+                res.redirect("/");
+            }
+        } else {
+            res.redirect("/login");
+        }
+    },
+    notfound: function (req, res) {
+        res.render("error/404", {
+            useHeader: true,
+            user: req.session.user,
+            kedai: req.session.user && req.session.user.Kedai_Profile
+        });
     }
 }

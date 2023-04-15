@@ -2,7 +2,7 @@
     {{#unless editMode}}
         <div class="flex items-end gap-3 mb-2">
             <h1>{{profile.full_name}}</h1>
-            {{#ifEq profile.username user.username}}
+            {{#ifEq this profile.username user.username}}
                 {{#unless editMode}}
                     <a href="/editprofile" class="link">Edit</a>
                 {{/unless}}

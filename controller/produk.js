@@ -20,6 +20,33 @@ module.exports = {
             res.redirect(`/k/${req.session.user.Kedai_Profile.name}`);
         });
     },
+    update: function (req, res) {
+        produk.update({
+            where: {
+                Id_kedaiId: {
+                    Id: parseInt(req.params.produkId),
+                    kedaiId: req.session.user.Id
+                }
+            },
+            data: {
+                name: req.body.name,
+                price: parseInt(req.body.price),
+                description: req.body.description,
+                picture: req.body.picture
+            }
+        }).then(_ => {
+            fs.rm(__dirname + `/../storage/${req.Produk.picture}`, err => {
+                if (err) {
+                    return res.render("error/500", {
+                        useHeader: true,
+                        user: req.session.user,
+                        kedai: req.session.user && req.session.user.Kedai_Profile
+                    });
+                }
+            })
+            res.redirect(`/k/${req.session.user.Kedai_Profile.name}`);
+        });
+    },
     delete: function (req, res) {
         if (req.session.user) {
             kedai_Profile.findFirst({
@@ -38,15 +65,8 @@ module.exports = {
                             }
                         },
                     }).then(Produk => {
-                        fs.rm(__dirname + `/../storage/${Produk.picture}`,(err) => {
-                                if (err) {
-                                    // File deletion failed
-                                    console.error(err.message);
-                                    return;
-                                }
-                                console.log("File deleted successfully");
-                            }
-                        );
+                        fs.rm(__dirname + `/../storage/${Produk.picture}`, () => {
+                        });
                         res.redirect(`/k/${Kedai.name}`);
                     })
                 },
