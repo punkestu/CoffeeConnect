@@ -1,5 +1,6 @@
 const {produk, kedai_Profile} = require("../prisma/db");
 const {kedaiprofile} = require("./view");
+const fs = require("fs");
 
 module.exports = {
     create: function (req, res) {
@@ -36,7 +37,16 @@ module.exports = {
                                 kedaiId: Kedai.Id
                             }
                         },
-                    }).then(_ => {
+                    }).then(Produk => {
+                        fs.rm(__dirname + `/../storage/${Produk.picture}`,(err) => {
+                                if (err) {
+                                    // File deletion failed
+                                    console.error(err.message);
+                                    return;
+                                }
+                                console.log("File deleted successfully");
+                            }
+                        );
                         res.redirect(`/k/${Kedai.name}`);
                     })
                 },

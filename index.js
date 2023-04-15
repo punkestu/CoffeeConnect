@@ -2,6 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const session = require('express-session');
 
+const db = require("./prisma/db");
+db.$queryRaw`SELECT 1 FROM user;`.then(
+    _=>console.log("DB running successfully"),
+    err=>console.log(err)
+)
+
 require('dotenv').config();
 
 const app = express();
