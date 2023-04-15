@@ -19,11 +19,6 @@ const setEnvValue = function (key, value) {
 fs.copyFile('./.env.example', './.env', async (err) => {
     if (err) throw err;
 
-    console.log("Database authentication");
-    const username = prompt("username: ");
-    const password = prompt("password: ");
-    setEnvValue("DATABASE_URL", `"postgresql://${username}:${password}@localhost:5432/ppl_project_coffeconnect?schema=public"`)
-
     const {genSalt} = require("bcrypt");
     genSalt(10).then(res=>{
         setEnvValue("SALT", '"'+res+'"');

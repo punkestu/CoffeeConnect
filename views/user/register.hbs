@@ -50,7 +50,7 @@
         <button type="submit" class="btn btn-primary w-full">Daftar</button>
         atau
 
-        {{#ifEq endpoint "/registerpenjual"}}
+        {{#ifEq this endpoint "/registerpenjual"}}
             <a href="/register" class="link">Daftar sebagai pembeli</a>
         {{else}}
             <a href="/registerpenjual" class="link">Daftar sebagai penjual</a>

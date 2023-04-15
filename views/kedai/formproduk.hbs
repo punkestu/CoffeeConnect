@@ -1,0 +1,57 @@
+<div class="mt-2 p-2">
+    <form action={{endpoint}} method="POST" class="flex flex-col gap-2" enctype="multipart/form-data">
+        <div class="flex flex-col gap-5">
+            <div class="flex items-center justify-center w-full">
+                <label for="dropzone-file"
+                       class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                    <div class="{{#unless produk.picture}}hidden {{/unless}}h-64 w-full flex justify-center" id="displaypic">
+                        <img class="object-contain" src="{{produk.picture}}" alt="">
+                    </div>
+                    <div class="{{#if produk.picture}}hidden {{/if}}flex flex-col items-center justify-center pt-5 pb-6" id="dialogpic">
+                        <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Klik untuk upload</span>
+                            atau seret ke sini</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG or JPG</p>
+                    </div>
+                </label>
+                <input id="dropzone-file" type="file" class="hidden" name="picture" value="{{produk.picture}}" onchange="readURL(this)"/>
+            </div>
+        </div>
+        <div class="w-full">
+            <label for="name" class="font-bold">Nama</label>
+            <input type="text" name="name" id="name" class="input-type w-full" value="{{produk.name}}" placeholder="Nama Menu">
+        </div>
+        <div class="w-full">
+            <label for="price" class="font-bold">Harga</label>
+            <input type="number" name="price" id="price" class="input-type w-full" value="{{produk.price}}" placeholder="Harga">
+        </div>
+        <div class="w-full">
+            <label for="description" class="font-bold">Deskripsi</label>
+            <textarea name="description" id="description" cols="30" rows="10" class="w-full input-type" placeholder="Deskripsi">{{produk.description}}</textarea>
+        </div>
+        {{#if editMode}}
+            <button class="btn btn-primary">Simpan</button>
+        {{else}}
+            <button class="btn btn-primary">Buat</button>
+        {{/if}}
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#displaypic").removeClass("hidden");
+                        $("#displaypic img").attr('src', e.target.result);
+                        $("#dialogpic").addClass("hidden");
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+    </form>
+</div>

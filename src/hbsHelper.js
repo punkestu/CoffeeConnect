@@ -1,9 +1,17 @@
+const Handlebars = require("handlebars");
 module.exports = {
-    ifEq: (a, b, option) => {
+    ifEq: (context, a, b, option) => {
         if (a === b) {
-            return option.fn(this);
+            return option.fn(context);
         } else {
-            return option.inverse(this);
+            return option.inverse(context);
         }
+    },
+    substr: (text, len) => {
+        return new Handlebars.SafeString(text.substring(0,len));
+    },
+    eachProduk: (context, produks, option)=>{
+        const result = produks.map(produk=>option.fn({...context, ...produk})).join("\n");
+        return new Handlebars.SafeString(result);
     }
 };
