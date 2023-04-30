@@ -50,6 +50,7 @@ model Produk {
   price       Int
   description String
   picture     String?
+  updatedAt   DateTime      @default(now())
 
   @@id([Id, kedaiId])
 }

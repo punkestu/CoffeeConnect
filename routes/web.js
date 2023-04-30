@@ -9,9 +9,7 @@ const produkCtrl = require("../controller/produk");
 const router = require("express").Router();
 
 
-router.get("/", function (req, res) {
-    res.render("index", {useHeader: true, user: req.session.user});
-});
+router.get("/", viewCtrl.timeline);
 
 router.get("/logout", function (req, res) {
     req.session.destroy();
@@ -54,7 +52,7 @@ router.post("/p",
     web,
     authCtrl.web.postprofile
 );
-router.get("/editprofile", viewCtrl.edituserprofile);
+router.get("/editprofile", required.fullname, web, viewCtrl.edituserprofile);
 
 router.get("/k/:namakedai", viewCtrl.kedaiprofile);
 router.post("/k",
@@ -64,6 +62,7 @@ router.post("/k",
 router.get("/editkedai", viewCtrl.editkedaiprofile);
 
 router.post("/produk", produkMid.save.picture, produkCtrl.create);
+router.get("/produk/:kedaiId/:produkId", viewCtrl.detailproduk);
 router.post("/produk/:produkId", produkMid.update.picture, produkCtrl.update);
 router.get("/editproduk/:produkId", viewCtrl.formeditproduk);
 router.get("/delete/:kedaiName/:produkId", produkCtrl.delete);

@@ -37,7 +37,6 @@ module.exports = {
         }
     },
     api: {
-
         getMy: async function (req, res) {
             res.status(200).send({data: {Kedai: req.Kedai}});
         },

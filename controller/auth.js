@@ -46,7 +46,7 @@ module.exports = {
                     req.User.profile.birth_date = req.User.profile.birth_date.toISOString().split("T")[0];
                 }
                 req.session.user = req.User;
-                return res.redirect("/");
+                return res.redirect(req.session.back || "/");
             }
         },
         register: function (req, res) {
@@ -77,7 +77,7 @@ module.exports = {
             }).then(User => {
                 delete req.session.error;
                 req.session.user = User;
-                return res.redirect("/");
+                return res.redirect(req.session.back || "/");
             }, _ => {
                 return res.redirect("/register");
             })
@@ -128,7 +128,12 @@ module.exports = {
                     address: req.body.address,
                     birth_date: new Date(req.body.birthdate),
                     phone: req.body.phone,
-                    bio: req.body.bio
+                    bio: req.body.bio,
+                    user: {
+                        update: {
+                            full_name: req.body.full_name
+                        }
+                    }
                 },
                 create: {
                     user: {

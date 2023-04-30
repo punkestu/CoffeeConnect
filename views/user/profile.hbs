@@ -40,11 +40,14 @@
         <form action="/p" method="POST" class="flex flex-col gap-2">
             <div class="flex justify-between items-stretch gap-5">
                 <div class="flex-grow flex flex-col">
+                    <label for="full_name" class="font-medium">Nama Lengkap</label>
+                    <input type="text" name="full_name" class="input-type" id="full_name"
+                           value="{{user.full_name}}" placeholder="Nama Lengkap"/>
                     <label for="birthdate" class="font-medium">Tanggal lahir</label>
                     <input type="date" name="birthdate" class="input-type" id="birthdate"
                            value="{{user.profile.birth_date}}"/>
                     <label for="address" class="font-medium">Alamat</label>
-                    <textarea name="address" class="input-type" id="address" cols="30" rows="10"
+                    <textarea name="address" class="input-type" id="address" cols="30" rows="9"
                               placeholder="Address">{{user.profile.address}}</textarea>
                     <label for="phone" class="font-medium">No Telepon</label>
                     <input type="tel" class="input-type" name="phone" id="phone" placeholder="Phone number"
