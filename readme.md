@@ -17,10 +17,12 @@ Projek ini dibuat sebagai bentuk pengerjaan tugas akhir mata kuliah **Perancanga
 Projek ini dibangun menggunakan bahasa pemrograman **JavaScript** dengan menggunakan framework **Nodejs** dan **Prisma**. Database yang digunakan adalah **PostgreSQL** dan view engine yang digunakan adalah **Handlebars**.
 
 ## Instalasi
-Jalankan instalasi modul nodejs lalu masukan username dan password postgresql pada file ```.env```
+Jalankan instalasi modul nodejs
 ```
 npm install
 ```
+lalu masukan username dan password postgresql pada file ```.env```
+
 Jika ingin mengganti data preparasi dapat menjalankan lagi perintah preparasi
 ```
 npm run prepare
