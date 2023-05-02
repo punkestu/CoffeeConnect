@@ -1,7 +1,6 @@
 const Handlebars = require("handlebars");
 module.exports = {
     ifEq: (context, a, b, option) => {
-        console.log(context);
         if (a === b) {
             return option.fn(context);
         } else {
