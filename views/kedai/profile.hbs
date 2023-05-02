@@ -119,21 +119,6 @@
                 </div>
                 <script>
                     const dropdown = new Dropdown($("#dropdown{{produk.Id}}")[0], $("#dropdown{{produk.Id}}-btn")[0]);
-
-                    function expand() {
-                        const $bio = $("#bio");
-                        const $expandBtn = $("#expandBtn");
-                        if (isExpand) {
-                            $bio.html(bio);
-                            $expandBtn.html("close");
-                        } else {
-                            $bio.html(bio.substring(0, 100) + "...");
-                            $expandBtn.html("expand");
-                        }
-                        isExpand = !isExpand;
-                    }
-
-                    expand();
                 </script>
             {{/eachProduk}}
         </div>
@@ -145,6 +130,20 @@
                 navigator.clipboard.writeText(window.location.host+link);
                 dropdown.hide();
             }
+
+            function expand() {
+                const $bio = $("#bio");
+                const $expandBtn = $("#expandBtn");
+                if (isExpand) {
+                    $bio.html(bio);
+                    $expandBtn.html("close");
+                } else {
+                    $bio.html(bio.substring(0, 100) + "...");
+                    $expandBtn.html("expand");
+                }
+                isExpand = !isExpand;
+            }
+            expand();
         </script>
     {{/unless}}
     {{#if editMode}}
