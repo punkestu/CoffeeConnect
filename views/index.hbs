@@ -3,11 +3,11 @@
     {{#eachProduk this feeds}}
         <div class="border p-4">
             {{#ifEq this user.Id produk.kedai.user.Id }}
-                {{> confirmmodal}}
+                {{> confirmmodal kedai=produk.kedai }}
             {{/ifEq}}
             <h1 class="capitalize">{{produk.name}}</h1>
             <div class="flex justify-end w-full">
-                {{> dropdownmenu key=produk.Id}}
+                {{> dropdownmenu key=produk.Id kedai=produk.kedai}}
             </div>
             <p><a href="/k/{{produk.kedai.name}}" class="link">{{produk.kedai.name}}</a> <span
                     class="text-slate-500">by {{produk.kedai.user.full_name}}</span></p>
@@ -16,7 +16,7 @@
             <a href="/produk/{{produk.kedai.name}}/{{produk.Id}}" class="link">Lihat</a>
             <h2 class="text-slate-500 text-md">Rp. {{produk.price}}</h2>
             <p>{{substr produk.description 100}} ...</p>
-            <script src="/js/copyCB.js"></script>
         </div>
     {{/eachProduk}}
+    <script src="/js/copyCB.js"></script>
 </div>
