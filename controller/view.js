@@ -11,7 +11,7 @@ module.exports = {
             }
         }).then(Feeds => {
             req.session.back = req.originalUrl;
-            return res.render("index", {useHeader: true, feeds: Feeds, user: req.session.user});
+            return res.render("index", {useHeader: true, feeds: Feeds, user: req.session.user, title: "Home"});
         })
     },
     login: function (req, res) {
@@ -20,7 +20,7 @@ module.exports = {
             const payload = req.session.payload;
             delete req.session.error;
             delete req.session.payload;
-            res.render("user/login", {errors, payload});
+            res.render("user/login", {errors, payload, title: "Login"});
         } else {
             return res.redirect("/");
         }
@@ -35,7 +35,7 @@ module.exports = {
                 errors,
                 payload,
                 endpoint: "/register",
-                role: "Pembeli"
+                role: "Pembeli", title: "Register Pembeli"
             });
         } else {
             return res.redirect("/");
@@ -48,7 +48,7 @@ module.exports = {
             delete req.session.error;
             delete req.session.payload;
             return res.render("user/register",
-                {errors, payload, endpoint: "/registerpenjual", role: "Penjual"});
+                {errors, payload, endpoint: "/registerpenjual", role: "Penjual", title: "Register Penjual"});
         } else {
             return res.redirect("/");
         }
@@ -63,7 +63,7 @@ module.exports = {
             }
         }).then(User => {
             req.session.back = req.originalUrl;
-            res.render("user/profile", {useHeader: true, profile: User, user: req.session.user});
+            res.render("user/profile", {useHeader: true, profile: User, user: req.session.user, title: User.username});
         })
     },
     edituserprofile: function (req, res) {
@@ -73,7 +73,14 @@ module.exports = {
             delete req.session.error;
             delete req.session.payload;
             req.session.back = req.originalUrl;
-            res.render("user/profile", {useHeader: true, user: req.session.user, editMode: true, errors, payload});
+            res.render("user/profile", {
+                useHeader: true,
+                user: req.session.user,
+                editMode: true,
+                errors,
+                payload,
+                title: "Edit Profile User"
+            });
         } else {
             req.session.back = req.originalUrl;
             res.redirect("/login");
@@ -90,7 +97,12 @@ module.exports = {
             }
         }).then(Kedai => {
             req.session.back = req.originalUrl;
-            return res.render("kedai/profile", {useHeader: true, user: req.session.user, kedai: Kedai});
+            return res.render("kedai/profile", {
+                useHeader: true,
+                user: req.session.user,
+                kedai: Kedai,
+                title: Kedai.name
+            });
         }, _ => {
             return res.send(404);
         });
@@ -103,7 +115,7 @@ module.exports = {
                     useHeader: true,
                     user: req.session.user,
                     kedai: req.session.user.Kedai_Profile,
-                    editMode: true
+                    editMode: true, title: "Edit Profile Kedai"
                 });
             } else {
                 res.redirect("/");
@@ -140,13 +152,13 @@ module.exports = {
                     useHeader: true,
                     user: req.session.user,
                     kedai: req.session.user && req.session.user.Kedai_Profile,
-                    produk: Produk
+                    produk: Produk, title: `${Produk.kedai.name} | ${Produk.name}`
                 });
             } else {
                 res.render("error/404", {
                     useHeader: true,
                     user: req.session.user,
-                    kedai: req.session.user && req.session.user.Kedai_Profile
+                    kedai: req.session.user && req.session.user.Kedai_Profile, title: "Not Found"
                 });
             }
         });
@@ -158,7 +170,7 @@ module.exports = {
                     endpoint: "/produk",
                     useHeader: true,
                     user: req.session.user,
-                    kedai: req.session.user.Kedai_Profile
+                    kedai: req.session.user.Kedai_Profile, title: "Create Produk"
                 });
             } else {
                 res.redirect("/");
@@ -188,13 +200,13 @@ module.exports = {
                             user: req.session.user,
                             kedai: req.session.user.Kedai_Profile,
                             produk: Produk,
-                            editMode: true
+                            editMode: true, title: `Edit Produk | ${Produk.name}`
                         });
                     } else {
                         res.render("error/404", {
                             useHeader: true,
                             user: req.session.user,
-                            kedai: req.session.user.Kedai_Profile,
+                            kedai: req.session.user.Kedai_Profile, title: "Not Found"
                         })
                     }
                 });
@@ -210,7 +222,7 @@ module.exports = {
         res.render("error/404", {
             useHeader: true,
             user: req.session.user,
-            kedai: req.session.user && req.session.user.Kedai_Profile
+            kedai: req.session.user && req.session.user.Kedai_Profile, title: "Not Found"
         });
     }
 }

@@ -30,7 +30,7 @@ app.use("/api", apiRoutes);
 const {engine} = require("express-handlebars");
 app.engine("hbs", engine({
     extname: "hbs",
-    partialsDir: "./views/layouts",
+    partialsDir: ["./views/layouts", "./views/components"],
     helpers: require("./src/hbsHelper")
 }));
 app.set("view engine", "hbs");

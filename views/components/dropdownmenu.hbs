@@ -1,0 +1,34 @@
+<button id="dropdown{{key}}-btn" data-dropdown-toggle="dropdown{{key}}" class="self-end">
+    <span class="material-symbols-rounded">more_vert</span>
+</button>
+<div id="dropdown{{key}}"
+     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+    <ul class="p-2 text-sm text-gray-700 dark:text-gray-200"
+        aria-labelledby="dropdownDefaultButton">
+        <li class="hover:bg-slate-50">
+            <button id="dismiss-btn" onclick="copyCB('/produk/{{produk.kedai.name}}/{{produk.Id}}', {{produk.Id}})"
+                    class="w-full px-4 py-2 text-slate-700 flex items-center gap-1">
+                <span class="material-symbols-rounded">share</span>
+                Share
+            </button>
+        </li>
+        {{#ifEq this user.Id kedai.user.Id }}
+            <hr>
+            <li class="hover:bg-slate-50">
+                <a href="/editproduk/{{produk.Id}}"
+                   class="px-4 py-2 text-slate-700 flex items-center gap-1">
+                    <span class="material-symbols-rounded">edit</span>
+                    Edit
+                </a>
+            </li>
+            <hr>
+            <li class="hover:bg-slate-50">
+                <button data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"
+                        class="px-4 py-2 text-red-700 flex items-center gap-1">
+                    <span class="material-symbols-rounded">delete</span>
+                    Delete
+                </button>
+            </li>
+        {{/ifEq}}
+    </ul>
+</div>
