@@ -1,5 +1,45 @@
 const Handlebars = require("handlebars");
 module.exports = {
+    cmp: (context, a, op, b, option) => {
+        switch (op) {
+            case "=":
+                if (a === b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+            case ">":
+                if (a > b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+            case "<":
+                if (a < b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+            case "<=":
+                if (a <= b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+            case ">=":
+                if (a >= b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+            case "!=":
+                if (a !== b) {
+                    return option.fn(context);
+                } else {
+                    return option.inverse(context);
+                }
+        }
+    },
     ifEq: (context, a, b, option) => {
         if (a === b) {
             return option.fn(context);
