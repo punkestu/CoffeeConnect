@@ -39,7 +39,7 @@ model Kedai_Profile {
   description String
   address     String
   phone       String   @db.VarChar(15)
-  Produk      Produk[]
+  produk      Produk[]
 }
 
 model Produk {
@@ -51,7 +51,7 @@ model Produk {
   description String
   picture     String?
   updatedAt   DateTime      @default(now())
-  Bahan       Bahan[]
+  bahan       Bahan[]
 
   @@id([Id, kedaiId])
 }
@@ -72,11 +72,11 @@ model Bahan {
 model Satuan {
   Id    Int     @id @default(autoincrement())
   nama  String
-  Bahan Bahan[]
+  bahan Bahan[]
 }
 
 model Role {
   Id        Int    @id @default(autoincrement())
   role_name String @unique
-  User      User[]
+  user      User[]
 }

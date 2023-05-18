@@ -8,7 +8,7 @@ module.exports = {
             },
             include: {
                 user: true,
-                Produk: {
+                produk: {
                     include: {
                         kedai: true
                     }

@@ -6,7 +6,12 @@ module.exports = {
             userName: req.params.username
         }).then(User => {
             req.session.back = req.originalUrl;
-            res.render("user/profile", {useHeader: true, profile: User, user: req.session.user, title: User.username});
+            res.render("user/profile", {
+                useHeader: true,
+                profile: User,
+                user: req.session.user,
+                title: User.username
+            });
         })
     },
     edituserprofile: function (req, res) {

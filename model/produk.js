@@ -19,7 +19,7 @@ module.exports = {
                 }
             },
             include: {
-                Bahan: {
+                bahan: {
                     include: {
                         satuan: true
                     }

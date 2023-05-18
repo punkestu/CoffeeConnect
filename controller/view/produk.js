@@ -4,7 +4,12 @@ module.exports = {
         produkM.findAll()
             .then(Feeds => {
                 req.session.back = req.originalUrl;
-                return res.render("index", {useHeader: true, feeds: Feeds, user: req.session.user, title: "Home"});
+                return res.render("index", {
+                    useHeader: true,
+                    feeds: Feeds,
+                    user: req.session.user,
+                    title: "Home"
+                });
             });
     },
     detailproduk: function (req, res) {
