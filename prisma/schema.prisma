@@ -51,8 +51,28 @@ model Produk {
   description String
   picture     String?
   updatedAt   DateTime      @default(now())
+  Bahan       Bahan[]
 
   @@id([Id, kedaiId])
+}
+
+model Bahan {
+  Id            Int    @id @default(autoincrement())
+  produk        Produk @relation(fields: [produkId, produkKedaiId], references: [Id, kedaiId])
+  produkId      Int
+  produkKedaiId String
+  nama          String
+  qty           Float
+  satuan        Satuan @relation(fields: [satuanId], references: [Id])
+  satuanId      Int
+  harga         Int
+  per           Float
+}
+
+model Satuan {
+  Id    Int     @id @default(autoincrement())
+  nama  String
+  Bahan Bahan[]
 }
 
 model Role {

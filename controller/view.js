@@ -1,4 +1,4 @@
-const {user, kedai_Profile, produk} = require("../prisma/db");
+const {user, bahan, satuan, kedai_Profile, produk} = require("../prisma/db");
 module.exports = {
     timeline: function (req, res) {
         produk.findMany({
@@ -213,6 +213,82 @@ module.exports = {
             } else {
                 res.redirect("/");
             }
+        } else {
+            req.session.back = req.originalUrl;
+            res.redirect("/login");
+        }
+    },
+    listbahan: function(req,res){
+        if (req.session.user) {
+            produk.findMany({
+                where:{
+                    kedai: {
+                        Id: req.session.user.Id
+                    }
+                },
+                include: {
+                    Bahan: {
+                        include: {
+                            satuan: true
+                        }
+                    }
+                }
+            }).then(Produk=>{
+                return res.render("bahanproduk/index", {
+                    useHeader: true,
+                    user: req.session.user,
+                    kedai: req.session.user.Kedai_Profile,
+                    produk: Produk
+                });
+            });
+        } else {
+            req.session.back = req.originalUrl;
+            res.redirect("/login");
+        }
+    },
+    formbahan: function (req, res) {
+        if (req.session.user) {
+            produk.findMany({
+                where: {
+                    kedai: {
+                        Id: req.session.user.Id
+                    }
+                }
+            }).then(async Produk=>{
+                const Satuan = await satuan.findMany({});
+                return res.render("bahanproduk/formbahan", {
+                    useHeader: true,
+                    user: req.session.user,
+                    kedai: req.session.user.Kedai_Profile,
+                    produk: Produk,
+                    satuan: Satuan
+                });
+            })
+        } else {
+            req.session.back = req.originalUrl;
+            res.redirect("/login");
+        }
+    },
+    formeditbahan: function(req,res){
+        if (req.session.user) {
+            bahan.findFirst({
+                where: {
+                    Id: req.params.Id
+                },
+                include:{
+                    produk: true,
+                    satuan: true
+                }
+            }).then(async Bahan=>{
+                const Satuan = await satuan.findMany({});
+                return res.render("bahanproduk/formeditbahan", {
+                    useHeader: true,
+                    user: req.session.user,
+                    kedai: req.session.user.Kedai_Profile,
+                    bahan: Bahan,
+                    satuan: Satuan
+                });
+            })
         } else {
             req.session.back = req.originalUrl;
             res.redirect("/login");

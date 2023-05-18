@@ -56,5 +56,5 @@ module.exports = {
     eachProduk: (context, produks, option)=>{
         const result = produks.map(produk=>option.fn({...context, produk})).join("\n");
         return new Handlebars.SafeString(result);
-    }
+    },
 };

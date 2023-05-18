@@ -6,6 +6,7 @@ const viewCtrl = require("../controller/view");
 const authCtrl = require("../controller/auth");
 const kedaiCtrl = require("../controller/kedai");
 const produkCtrl = require("../controller/produk");
+const bahanCtrl = require("../controller/bahan");
 const router = require("express").Router();
 
 
@@ -67,6 +68,12 @@ router.post("/produk/:produkId", produkMid.update.picture, produkCtrl.update);
 router.get("/editproduk/:produkId", viewCtrl.formeditproduk);
 router.get("/delete/:kedaiName/:produkId", produkCtrl.delete);
 router.get("/formproduk", viewCtrl.formproduk);
+
+router.get("/bahan", viewCtrl.listbahan);
+router.get("/formbahan", viewCtrl.formbahan);
+router.post("/bahan/tambah", bahanCtrl.create);
+router.get("/bahan/edit/:bahanId", viewCtrl.formeditbahan);
+router.post("/bahan/edit/:bahanId", bahanCtrl.edit);
 
 router.use(viewCtrl.notfound);
 

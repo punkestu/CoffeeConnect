@@ -1,0 +1,17 @@
+<div>
+    {{#each produk}}
+        <div>
+            <h1>{{name}}</h1>
+            <div>
+                {{#each Bahan}}
+                    <div>
+                        <h2>{{nama}}</h2>
+                        <h2>{{qty}} {{satuan.nama}}</h2>
+                        <h2>{{harga}}/{{per}} {{satuan.nama}}</h2>
+                    </div>
+                    <a href="/bahan/edit/{{Id}}">Edit</a>
+                {{/each}}
+            </div>
+        </div>
+    {{/each}}
+</div>
