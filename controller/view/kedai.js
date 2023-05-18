@@ -10,8 +10,6 @@ module.exports = {
                     kedai: Kedai,
                     title: Kedai.name
                 });
-            }, _ => {
-                return res.send(404);
             });
     },
     editkedaiprofile: function (req, res) {
