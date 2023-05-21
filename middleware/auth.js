@@ -5,13 +5,16 @@ const {verify} = require("jsonwebtoken");
 
 module.exports = {
     isAuth: function (req, res, next) {
-        if (req.headers.authorization.split(' ')[1]) {
-            req.User = verify(req.headers.authorization.split(' ')[1], process.env.JWT_KEY);
-            if (req.User) {
-                return next();
-            }
+        if (req.session.user) {
+            return next();
         }
-        return res.status(403).send({errors: {msg: "forbidden"}});
+        return res.redirect("/login");
+    },
+    isGuest: function (req, res, next) {
+        if (!req.session.user) {
+            return next();
+        }
+        return res.redirect("/");
     },
     required: {
         fullname: body("fullname")
@@ -50,6 +53,7 @@ module.exports = {
         userPassword: body("password").custom(async (password, {req}) => {
             if (req.User) {
                 const pwValid = await compare(password, req.User.password);
+                console.log(password);
                 if (!pwValid) {
                     throw new Error("Password salah");
                 }

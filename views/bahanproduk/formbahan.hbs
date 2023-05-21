@@ -1,0 +1,46 @@
+<main class="h-[calc(100vh-3rem)] flex items-center justify-center flex-grow text-white">
+    <form action="/bahan/tambah" method="post" class="flex flex-col gap-2 w-full px-4">
+        <label for="menu" class="font-bold">Menu</label>
+        <select name="menu" id="menu" class="input-type">
+            <option value selected disabled>Pilih menu</option>
+            {{#each produk}}
+                <option value="{{Id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        <label for="bahan" class="font-bold">Nama Bahan</label>
+        <input type="text" name="nama" id="nama" class="input-type" placeholder="Nama Bahan">
+        <div class="flex gap-2 w-full items-center">
+            <div class="flex flex-col w-1/2">
+                <label for="qty" class="font-bold">Kuantitas</label>
+                <div class="flex border border-slate-400 gap-2 items-center text-black bg-white rounded-lg">
+                    <input type="number" class="flex-grow rounded-lg" step="0.1" name="qty" id="qty" placeholder="Banyaknya">
+                    <select name="satuan" id="satuan" class="rounded-lg" onchange="updateSatuan()">
+                        {{#each satuan}}
+                            <option value="{{Id}}">{{nama}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="flex flex-col w-1/2">
+                <label for="harga" class="font-bold">Harga</label>
+                <div class="flex border border-slate-400 gap-2 items-center text-black bg-white rounded-lg">
+                    <input type="number" class="flex-grow rounded-lg" name="harga" id="harga" placeholder="Harga">
+                    /
+                    <div class="flex w-3/12 items-center gap-2">
+                        <input type="number" class="w-2/4 rounded-lg" name="per" id="per" value="1" placeholder="0" min="1">
+                        <span id="satuan-per" class="font-bold"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn-primary px-4 py-2 rounded-xl self-center">Simpan</button>
+    </form>
+</main>
+<script>
+    function updateSatuan() {
+        const satuan = $("#satuan").find(":selected").text();
+        $("#satuan-per").html(satuan);
+    }
+
+    updateSatuan()
+</script>

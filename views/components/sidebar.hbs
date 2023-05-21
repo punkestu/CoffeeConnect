@@ -1,0 +1,27 @@
+{{#if user}}
+    <section id="sidebar" class="sticky top-[3.5rem] flex flex-col p-2 w-1/6">
+        <div class="flex flex-col p-4 bg-white rounded-xl font-bold">
+            <a href="/">Home</a>
+            {{#ifEq this user.role.role_name "Penjual"}}
+                {{#if user.Kedai_Profile}}
+                    <a href="/k/{{user.Kedai_Profile.name}}">Profile kedai</a>
+                    <a href="/bahan">Produk</a>
+                {{else}}
+                    <a href="/editKedai">Profile kedai</a>
+                {{/if}}
+            {{/ifEq}}
+        </div>
+        {{#if useAction}}
+
+            {{#ifEq this user.role.role_name "Penjual"}}
+                {{#if user.Kedai_Profile}}
+                    <div class="flex flex-col mt-2 gap-2">
+                        <p class="bg-white/50 py-1 px-2 rounded-lg">Data Produksi</p>
+                        <a href="/produk/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Menu</a>
+                        <a href="/bahan/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Bahan</a>
+                    </div>
+                {{/if}}
+            {{/ifEq}}
+        {{/if}}
+    </section>
+{{/if}}

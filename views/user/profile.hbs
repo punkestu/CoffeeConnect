@@ -1,5 +1,5 @@
-<div class="mt-2 p-2">
-    {{#unless editMode}}
+<div class="p-2 min-h-[calc(100vh-3rem)] flex items-center justify-center flex-grow">
+    <div class="bg-white p-4 rounded-xl w-1/2">
         <div class="flex items-end gap-3 mb-2">
             <h1>{{profile.full_name}}</h1>
             {{#ifEq this profile.username user.username}}
@@ -10,57 +10,12 @@
         </div>
         <div class="flex flex-col gap-2 ps-5">
             <p>@{{profile.username}}</p>
-            <a href="http://wa.me/{{profile.profile.phone}}" class="link self-start border">Contact me: {{profile.profile.phone}}</a>
-            <div class="flex flex-col items-center gap-2">
-                <p id="bio" class="text-left w-full"></p>
-                <button id="expandBtn" class="rounded px-2 bg-slate-300 text-slate-700 text w-1/3" onclick="expand()">expand</button>
-            </div>
             <p class="text-slate-600">{{profile.profile.address}}</p>
+            {{#if profile.profile.phone}}
+                <a href="http://wa.me/{{profile.profile.phone}}" class="link self-start border">Contact
+                    me: {{profile.profile.phone}}</a>
+            {{/if}}
         </div>
         <hr class="mt-2"/>
-        <script>
-            const bio = "{{profile.profile.bio}}";
-            var isExpand = false;
-            function expand() {
-                const $bio = $("#bio");
-                const $expandBtn = $("#expandBtn");
-                if (isExpand) {
-                    $bio.html(bio);
-                    $expandBtn.html("close");
-                } else {
-                    $bio.html(bio.substring(0, 100) + "...");
-                    $expandBtn.html("expand");
-                }
-                isExpand = !isExpand;
-            }
-            expand();
-        </script>
-    {{/unless}}
-    {{#if editMode}}
-        <form action="/p" method="POST" class="flex flex-col gap-2">
-            <div class="flex justify-between items-stretch gap-5">
-                <div class="flex-grow flex flex-col">
-                    <label for="full_name" class="font-medium">Nama Lengkap</label>
-                    <input type="text" name="full_name" class="input-type" id="full_name"
-                           value="{{user.full_name}}" placeholder="Nama Lengkap"/>
-                    <label for="birthdate" class="font-medium">Tanggal lahir</label>
-                    <input type="date" name="birthdate" class="input-type" id="birthdate"
-                           value="{{user.profile.birth_date}}"/>
-                    <label for="address" class="font-medium">Alamat</label>
-                    <textarea name="address" class="input-type" id="address" cols="30" rows="9"
-                              placeholder="Address">{{user.profile.address}}</textarea>
-                    <label for="phone" class="font-medium">No Telepon</label>
-                    <input type="tel" class="input-type" name="phone" id="phone" placeholder="Phone number"
-                           value="{{user.profile.phone}}"/>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <label for="bio" class="font-medium">Deskripsi</label>
-                    <textarea name="bio" class="input-type h-full" id="bio" cols="30" rows="10"
-                              placeholder="Description">{{user.profile.bio}}</textarea>
-                    <p class="error-msg">{{errors.bio.msg}}</p>
-                </div>
-            </div>
-            <button class="btn btn-primary">Save</button>
-        </form>
-    {{/if}}
+    </div>
 </div>
