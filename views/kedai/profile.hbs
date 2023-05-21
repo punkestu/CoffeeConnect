@@ -1,7 +1,8 @@
 <div class="mt-2 p-2 flex-grow flex flex-col items-center min-h-[calc(100vh-3rem)]">
     {{> notif}}
     <div class="bg-white p-4 rounded-xl w-2/3">
-        <div class="flex items-end justify-between gap-3 px-8">
+        <img src="/picture/{{kedai.picture}}" alt="">
+        <div class="flex items-end justify-between gap-3 px-8 mt-4">
             <div class="flex items-end gap-3 mb-2">
                 <h1>{{kedai.name}}</h1>
                 {{#ifEq this kedai.user.username user.username}}

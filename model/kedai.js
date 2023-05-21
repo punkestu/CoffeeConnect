@@ -16,12 +16,13 @@ module.exports = {
             }
         });
     },
-    upsert: function({userId, name, address, description, phone}){
+    upsert: function({picture, userId, name, address, description, phone}){
         return kedai_Profile.upsert({
                 where: {
                     Id: userId
                 },
                 create: {
+                    picture: picture,
                     name: name,
                     address: address,
                     description: description,
@@ -33,6 +34,7 @@ module.exports = {
                     }
                 },
                 update: {
+                    picture: picture,
                     name: name,
                     address: address,
                     description: description,
