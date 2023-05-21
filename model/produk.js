@@ -8,7 +8,12 @@ module.exports = {
                         user: true
                     }
                 }
-            }
+            },
+            orderBy: [
+                {
+                    updatedAt: 'desc'
+                }
+            ]
         });
     },
     findMany: function({kedaiId}){

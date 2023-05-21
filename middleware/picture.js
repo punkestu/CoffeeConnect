@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 const {produk} = require("../prisma/db");
+const fs = require("fs");
 
 module.exports = {
     save: {
@@ -42,5 +43,5 @@ module.exports = {
                 return res.redirect("/login");
             }
         }]
-    }
+    },
 }
