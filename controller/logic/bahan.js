@@ -4,7 +4,7 @@ module.exports = {
         bahanM.create({
             produkId: req.body.menu,
             kedaiId: req.session.user.Id,
-            bahan: req.body.bahan,
+            nama: req.body.nama,
             qty: req.body.qty,
             satuanId: req.body.satuan,
             harga: req.body.harga,
@@ -22,6 +22,7 @@ module.exports = {
             per: req.body.per,
             satuanId: req.body.satuan
         }).then(Bahan=>{
+            console.log(Bahan);
             return res.redirect("/bahan");
         });
     }

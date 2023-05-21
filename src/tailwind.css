@@ -7,7 +7,7 @@
 }
 
 .btn-primary{
-    @apply bg-blue-600 text-white
+    @apply bg-slate-400 font-medium text-black
 }
 
 .btn-secondary{
@@ -19,11 +19,11 @@
 }
 
 .link{
-    @apply text-blue-600 underline
+    @apply underline
 }
 
 .input-type{
-    @apply border-2 border-slate-400 p-2 rounded-lg my-2 resize-none
+    @apply border-2 border-slate-400 text-black p-2 rounded-lg my-2 resize-none
 }
 
 .error-msg{

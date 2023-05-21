@@ -1,0 +1,28 @@
+<div class="min-h-[calc(100vh-3rem)] flex justify-center py-2 flex-grow">
+    {{> notif }}
+    <div class="">
+        <div class="px-10 py-4 bg-white rounded-t-xl border flex flex-col gap-2">
+            {{#ifEq this user.Id produk.kedai.user.Id }}
+                {{> confirmmodal }}
+            {{/ifEq}}
+            <div class="flex items-center">
+                <h1 class="capitalize">{{produk.name}}</h1>
+                <div class="flex justify-end w-full">
+                    {{> dropdownmenu key=produk.Id kedai=produk.kedai}}
+                </div>
+            </div>
+            <p>
+                <a href="/k/{{produk.kedai.name}}" class="link">{{produk.kedai.name}}</a>
+                <span class="text-slate-500">by {{produk.kedai.user.full_name}}</span>
+            </p>
+            <p class="text-sm text-slate-500">Updated at {{produk.updatedAt}}</p>
+            <img class=" p-4 border w-full" src="/picture/{{produk.picture}}" alt="">
+            <h2 class="text-slate-500 text-md">Rp. {{produk.price}}</h2>
+            <p>{{produk.description}}</p>
+        </div>
+        <div class="bg-white py-4 rounded-b-xl">
+            <h1 class="text-center">Fitur Ulasan dalam pengerjaan ...</h1>
+        </div>
+    </div>
+</div>
+<script src="/js/copyCB.js"></script>

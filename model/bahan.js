@@ -11,7 +11,7 @@ module.exports = {
             }
         });
     },
-    create: function ({produkId, kedaiId, bahan, qty, satuanId, harga, per}) {
+    create: function ({produkId, kedaiId, nama, qty, satuanId, harga, per}) {
         return _bahan.create({
             data: {
                 produk: {
@@ -22,7 +22,7 @@ module.exports = {
                         }
                     }
                 },
-                nama: bahan,
+                nama: nama,
                 qty: parseFloat(qty),
                 satuan: {
                     connect: {

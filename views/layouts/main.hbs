@@ -11,10 +11,10 @@
 </head>
 <body class="tracking-wide">
 <script src="/flowbite/flowbite.js"></script>
-{{#if useHeader}}
+{{#unless noHeader}}
     {{>header}}
 {{else}}
     {{{body}}}
-{{/if}}
+{{/unless}}
 </body>
 </html>

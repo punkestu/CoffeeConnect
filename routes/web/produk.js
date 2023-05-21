@@ -8,8 +8,8 @@ router.get("/", produkV.timeline);
 router.post("/produk", isAuth, produkMid.save.picture, produkC.create);
 router.get("/produk/:kedaiId/:produkId", produkV.detailproduk);
 router.post("/produk/:produkId", isAuth, produkMid.update.picture, produkC.update);
-router.get("/editproduk/:produkId", isAuth, produkV.formeditproduk);
+router.get("/editproduk/:produkId", isAuth, produkV.editproduk);
 router.get("/delete/:kedaiName/:produkId", isAuth, produkC.delete);
-router.get("/formproduk", isAuth, produkV.formproduk);
+router.get("/produk/tambah", isAuth, produkV.tambahproduk);
 
 module.exports = router;

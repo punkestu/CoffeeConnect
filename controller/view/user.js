@@ -20,10 +20,9 @@ module.exports = {
         delete req.session.error;
         delete req.session.payload;
         req.session.back = req.originalUrl;
-        res.render("user/profile", {
+        res.render("user/editprofile", {
             useHeader: true,
             user: req.session.user,
-            editMode: true,
             errors,
             payload,
             title: "Edit Profile User"

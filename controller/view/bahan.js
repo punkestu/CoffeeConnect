@@ -7,7 +7,7 @@ module.exports = {
             kedaiId: req.session.user.Id
         }).then(Produk => {
             return res.render("bahanproduk/index", {
-                useHeader: true,
+                useAction: true,
                 user: req.session.user,
                 kedai: req.session.user.Kedai_Profile,
                 produk: Produk
@@ -20,8 +20,8 @@ module.exports = {
         }).then(async Produk => {
             const Satuan = await satuan.findMany({});
             return res.render("bahanproduk/formbahan", {
-                useHeader: true,
                 user: req.session.user,
+                useAction: true,
                 kedai: req.session.user.Kedai_Profile,
                 produk: Produk,
                 satuan: Satuan
@@ -34,8 +34,8 @@ module.exports = {
         }).then(async Bahan => {
             const Satuan = await satuan.findMany({});
             return res.render("bahanproduk/formeditbahan", {
-                useHeader: true,
                 user: req.session.user,
+                useAction: true,
                 kedai: req.session.user.Kedai_Profile,
                 bahan: Bahan,
                 satuan: Satuan

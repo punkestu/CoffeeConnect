@@ -4,7 +4,13 @@ module.exports = {
         const payload = req.session.payload;
         delete req.session.error;
         delete req.session.payload;
-        res.render("user/login", {errors, payload, title: "Login"});
+        res.render("user/login", {
+            errors,
+            payload,
+            noHeader: true,
+            noSidebar: true,
+            title: "Login"
+        });
     },
     register: function (req, res) {
         const errors = req.session.error;
@@ -14,6 +20,8 @@ module.exports = {
         res.render("user/register", {
             errors,
             payload,
+            noHeader: true,
+            noSidebar: true,
             endpoint: "/register",
             role: "Pembeli", title: "Register Pembeli"
         });
@@ -26,6 +34,8 @@ module.exports = {
         return res.render("user/register", {
             errors,
             payload,
+            noHeader: true,
+            noSidebar: true,
             endpoint: "/registerpenjual",
             role: "Penjual",
             title: "Register Penjual"

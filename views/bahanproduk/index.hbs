@@ -1,15 +1,17 @@
-<div>
+<div class="flex-grow m-2 h-[calc(100vh-4rem)] flex flex-col gap-2">
     {{#each produk}}
-        <div>
+        <div class="bg-white m-2 p-4 rounded-xl">
             <h1>{{name}}</h1>
-            <div>
+            <div class="bg-slate-100 p-4 mt-2 flex flex-col gap-2">
                 {{#each bahan}}
                     <div>
-                        <h2>{{nama}}</h2>
-                        <h2>{{qty}} {{satuan.nama}}</h2>
-                        <h2>{{harga}}/{{per}} {{satuan.nama}}</h2>
+                        <div class="flex gap-2 items-end">
+                            <h2 class="font-medium text-xl">{{nama}}</h2>
+                            <a href="/bahan/edit/{{Id}}" class="link">Edit</a>
+                        </div>
+                        <h2>Takaran: {{qty}} {{satuan.nama}}</h2>
+                        <h2>Harga: Rp.{{harga}}/{{per}} {{satuan.nama}}</h2>
                     </div>
-                    <a href="/bahan/edit/{{Id}}">Edit</a>
                 {{/each}}
             </div>
         </div>

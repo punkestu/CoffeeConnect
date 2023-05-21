@@ -1,18 +1,16 @@
-<div class="mt-2 p-2">
-    {{#unless editMode}}
-        {{> notif}}
-        <div class="flex items-end justify-between gap-3 px-8 mb-2">
+<div class="mt-2 p-2 flex-grow flex flex-col items-center min-h-[calc(100vh-3rem)]">
+    {{> notif}}
+    <div class="bg-white p-4 rounded-xl w-2/3">
+        <div class="flex items-end justify-between gap-3 px-8">
             <div class="flex items-end gap-3 mb-2">
                 <h1>{{kedai.name}}</h1>
                 {{#ifEq this kedai.user.username user.username}}
                     <a href="/editkedai" class="link">Edit</a>
                 {{/ifEq}}
             </div>
-            {{#ifEq this kedai.user.username user.username}}
-                <a href="/formproduk" class="btn btn-primary"><span class="text-lg font-bold">+</span> Create Menu</a>
-            {{/ifEq}}
         </div>
         <div class="flex flex-col gap-2 px-8">
+            <a href="/p/{{kedai.user.username}}">by <span class="link">{{kedai.user.username}}</span></a>
             <p class="text-slate-600">{{kedai.address}}</p>
             <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
             <div class="flex flex-col items-center gap-2">
@@ -22,16 +20,18 @@
                 </button>
             </div>
         </div>
-        <hr class="mt-2"/>
-        <div class="mt-2 px-8 gap-2 flex flex-wrap">
-            {{#eachProduk this kedai.produk}}
-                <div class="flex flex-col items-start w-[49.385%] lg:w-[24.55%] border rounded-lg">
+    </div>
+    <hr class="mt-2"/>
+    <div class="mt-2 flex flex-wrap w-2/3">
+        {{#eachProduk this kedai.produk}}
+            <div class="w-1/2 p-1 ps-0">
+                <div class="flex flex-col items-start bg-white rounded-lg">
                     <div class="p-2 flex justify-end w-full">
                         {{> dropdownmenu key=produk.Id}}
                     </div>
                     <a href="/produk/{{kedai.name}}/{{produk.Id}}" class="w-full p-2 pt-0">
-                        <div class="w-full h-56 lg:h-64 flex justify-center bg-slate-100 mb-2 border">
-                            <img class="object-cover" src="/picture/{{produk.picture}}" alt="">
+                        <div class="w-full h-52 lg:h-56 flex justify-center bg-slate-100 mb-2 border">
+                            <img class="object-contain" src="/picture/{{produk.picture}}" alt="">
                         </div>
                         <h1 class="text-xl font-bold capitalize">{{produk.name}}</h1>
                         <h2 class="text-slate-500 text-sm">Rp. {{produk.price}}</h2>
@@ -48,59 +48,36 @@
                         </div>
                     </a>
                 </div>
-                {{> confirmmodal }}
-                <script>
-                    const dropdown = new Dropdown($("#dropdown{{produk.Id}}")[0], $("#dropdown{{produk.Id}}-btn")[0]);
-                </script>
-            {{/eachProduk}}
-        </div>
-        <script src="/js/copyCB.js"></script>
-        <script>
-            const bio = "{{kedai.description}}";
-            var isExpand = false;
-
-            // function copyCB(link) {
-            //     navigator.clipboard.writeText(window.location.host + link);
-            //     dropdown.hide();
-            // }
-
-            function expand() {
-                const $bio = $("#bio");
-                const $expandBtn = $("#expandBtn");
-                if (isExpand) {
-                    $bio.html(bio);
-                    $expandBtn.html("close");
-                } else {
-                    $bio.html(bio.substring(0, 100) + "...");
-                    $expandBtn.html("expand");
-                }
-                isExpand = !isExpand;
-            }
-
-            expand();
-        </script>
-    {{/unless}}
-    {{#if editMode}}
-        <form action="/k" method="POST" class="flex flex-col gap-2">
-            <div class="flex justify-between items-stretch gap-5">
-                <div class="flex-grow flex flex-col">
-                    <label for="name" class="font-medium">Nama</label>
-                    <input type="text" name="name" class="input-type" id="name" placeholder="Kedai name"
-                           value="{{kedai.name}}"/>
-                    <label for="address" class="font-medium">Alamat</label>
-                    <textarea name="address" class="input-type" id="address" cols="30" rows="10"
-                              placeholder="Address">{{kedai.address}}</textarea>
-                    <label for="phone" class="font-medium">No Telepon</label>
-                    <input type="tel" class="input-type" name="phone" id="phone" placeholder="Phone number"
-                           value="{{kedai.phone}}"/>
-                </div>
-                <div class="flex-grow flex flex-col">
-                    <label for="description" class="font-medium">Deskripsi</label>
-                    <textarea name="description" class="input-type h-full" id="description" cols="30" rows="10"
-                              placeholder="Description">{{kedai.description}}</textarea>
-                </div>
             </div>
-            <button class="btn btn-primary">Save</button>
-        </form>
-    {{/if}}
+            {{> confirmmodal }}
+            <script>
+                const dropdown = new Dropdown($("#dropdown{{produk.Id}}")[0], $("#dropdown{{produk.Id}}-btn")[0]);
+            </script>
+        {{/eachProduk}}
+    </div>
+    <script src="/js/copyCB.js"></script>
+    <script>
+        const bio = "{{kedai.description}}";
+        var isExpand = false;
+
+        // function copyCB(link) {
+        //     navigator.clipboard.writeText(window.location.host + link);
+        //     dropdown.hide();
+        // }
+
+        function expand() {
+            const $bio = $("#bio");
+            const $expandBtn = $("#expandBtn");
+            if (isExpand) {
+                $bio.html(bio);
+                $expandBtn.html("close");
+            } else {
+                $bio.html(bio.substring(0, 100) + "...");
+                $expandBtn.html("expand");
+            }
+            isExpand = !isExpand;
+        }
+
+        expand();
+    </script>
 </div>

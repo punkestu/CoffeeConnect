@@ -11,6 +11,9 @@ module.exports = {
                     '0%': {opacity: "100%"},
                     '100%': {opacity: "0"}
                 }
+            },
+            colors: {
+                "primary": "#394867",
             }
         },
     },

@@ -1,0 +1,23 @@
+<div class="p-2 min-h-[calc(100vh-3rem)] text-white flex-grow">
+    <form action="/k" method="POST" class="flex flex-col gap-2">
+        <div class="flex justify-between items-stretch gap-5">
+            <div class="flex-grow flex flex-col">
+                <label for="name" class="font-medium">Nama</label>
+                <input type="text" name="name" class="input-type" id="name" placeholder="Kedai name"
+                       value="{{kedai.name}}"/>
+                <label for="address" class="font-medium">Alamat</label>
+                <textarea name="address" class="input-type" id="address" cols="30" rows="10"
+                          placeholder="Address">{{kedai.address}}</textarea>
+                <label for="phone" class="font-medium">No Telepon</label>
+                <input type="tel" class="input-type" name="phone" id="phone" placeholder="Phone number"
+                       value="{{kedai.phone}}"/>
+            </div>
+            <div class="flex-grow flex flex-col">
+                <label for="description" class="font-medium">Deskripsi</label>
+                <textarea name="description" class="input-type h-full" id="description" cols="30" rows="10"
+                          placeholder="Description">{{kedai.description}}</textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary">Save</button>
+    </form>
+</div>
