@@ -48,4 +48,4 @@ app.use(session({
 
 app.use("/", webRoutes);
 
-const _ = app.listen(3000, () => console.log("listening at http://localhost:3000"));
+app.listen(3000, () => console.log("listening at http://localhost:3000"));

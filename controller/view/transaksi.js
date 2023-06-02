@@ -1,7 +1,5 @@
 const transaksiM = require("../../model/transaksi");
 const produkM = require("../../model/produk");
-
-const prisma = require("../../prisma/db");
 const {predictWithData} = require("../../machine/predict");
 
 module.exports = {

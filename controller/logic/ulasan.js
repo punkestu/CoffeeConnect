@@ -58,7 +58,7 @@ module.exports = {
                         rating: parseFloat(req.body.star),
                         comment: req.body.comment
                     }
-                }).then(Ulasan => {
+                }).then(_ => {
                     return res.redirect(`/produk/${Kedai.name}/${req.params.produkId}`);
                 });
             });

@@ -1,7 +1,5 @@
 const {createReadStream} = require("fs");
 const {parse} = require("csv");
-const multer = require("multer");
-const http = require("http");
 transaksiM = require("../../model/transaksi");
 
 module.exports = {
@@ -10,7 +8,7 @@ module.exports = {
             at: req.body.at,
             kedaiId: req.session.user.Id,
             dataTransaksi: req.body.dTransaksi
-        }).then(Transaksi => {
+        }).then(_ => {
             return res.redirect("/");
         });
     },
