@@ -1,14 +1,23 @@
 const {produk} = require("../prisma/db");
 module.exports = {
-    findAll: function(){
+    findMy: function ({kedaiId}) {
         return produk.findMany({
-            include: {
-                kedai: {
-                    include: {
-                        user: true
-                    }
+            where: {
+                kedaiId
+            }
+        });
+    },
+    findAll: function (
+        include = {
+            kedai: {
+                include: {
+                    user: true
                 }
-            },
+            }
+        }
+    ) {
+        return produk.findMany({
+            include,
             orderBy: [
                 {
                     updatedAt: 'desc'
@@ -16,9 +25,9 @@ module.exports = {
             ]
         });
     },
-    findMany: function({kedaiId}){
+    findMany: function ({kedaiId}) {
         return produk.findMany({
-            where:{
+            where: {
                 kedai: {
                     Id: kedaiId
                 }
@@ -33,7 +42,7 @@ module.exports = {
             }
         });
     },
-    findFirst: function ({produkId, kedaiId}){
+    findFirst: function ({produkId, kedaiId}) {
         return produk.findFirst({
             where: {
                 AND: [
@@ -54,7 +63,7 @@ module.exports = {
             }
         })
     },
-    create: function({picture, name, price, description, kedaiId}){
+    create: function ({picture, name, price, description, kedaiId}) {
         return produk.create({
             data: {
                 picture: picture,
@@ -69,7 +78,7 @@ module.exports = {
             }
         });
     },
-    update: function({userId, produkId, name, price, description, picture}){
+    update: function ({userId, produkId, name, price, description, picture}) {
         return produk.update({
             where: {
                 Id_kedaiId: {
@@ -85,7 +94,7 @@ module.exports = {
             }
         });
     },
-    delete: function({produkId, kedaiId}){
+    delete: function ({produkId, kedaiId}) {
         return produk.delete({
             where: {
                 Id_kedaiId: {

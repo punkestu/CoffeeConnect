@@ -32,26 +32,28 @@ model User_Profile {
 }
 
 model Kedai_Profile {
-  Id          String   @id @unique
-  user        User     @relation(fields: [Id], references: [Id])
-  name        String   @unique
+  Id          String      @id @unique
+  user        User        @relation(fields: [Id], references: [Id])
+  name        String      @unique
   picture     String?
   description String
   address     String
-  phone       String   @db.VarChar(15)
+  phone       String      @db.VarChar(15)
   produk      Produk[]
+  Transaksi   Transaksi[]
 }
 
 model Produk {
-  Id          Int           @default(autoincrement())
-  kedai       Kedai_Profile @relation(fields: [kedaiId], references: [Id])
-  kedaiId     String
-  name        String
-  price       Int
-  description String
-  picture     String?
-  updatedAt   DateTime      @default(now())
-  bahan       Bahan[]
+  Id              Int               @default(autoincrement())
+  kedai           Kedai_Profile     @relation(fields: [kedaiId], references: [Id])
+  kedaiId         String
+  name            String
+  price           Int
+  description     String
+  picture         String?
+  updatedAt       DateTime          @default(now())
+  bahan           Bahan[]
+  TransaksiDetail TransaksiDetail[]
 
   @@id([Id, kedaiId])
 }
@@ -79,4 +81,22 @@ model Role {
   Id        Int    @id @default(autoincrement())
   role_name String @unique
   user      User[]
+}
+
+model Transaksi {
+  Id              Int               @id @default(autoincrement())
+  kedai           Kedai_Profile     @relation(fields: [kedai_ProfileId], references: [Id])
+  kedai_ProfileId String
+  at              DateTime          @default(now()) @db.Date
+  TransaksiDetail TransaksiDetail[]
+}
+
+model TransaksiDetail {
+  Id            Int       @id @default(autoincrement())
+  transaksi     Transaksi @relation(fields: [transaksiId], references: [Id])
+  transaksiId   Int
+  produk        Produk    @relation(fields: [produkId, produkKedaiId], references: [Id, kedaiId])
+  produkId      Int
+  produkKedaiId String
+  qty           Int
 }

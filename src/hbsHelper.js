@@ -1,5 +1,14 @@
 const Handlebars = require("handlebars");
 module.exports = {
+    currency: (num) => {
+        return new Handlebars.SafeString(new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        }).format(num));
+    },
+    eachFrom: (items, from, option) => {
+        return items.slice(from).map((item) => option.fn(item)).join("\n");
+    },
     cmp: (context, a, op, b, option) => {
         switch (op) {
             case "=":
@@ -48,13 +57,13 @@ module.exports = {
         }
     },
     dateformat: (timestamp) => {
-      return new Handlebars.SafeString(new Date(timestamp).toLocaleString());
+        return new Handlebars.SafeString(new Date(timestamp).toLocaleString());
     },
     substr: (text, len) => {
-        return new Handlebars.SafeString(text.substring(0,len));
+        return new Handlebars.SafeString(text.substring(0, len));
     },
-    eachProduk: (context, produks, option)=>{
-        const result = produks.map(produk=>option.fn({...context, produk})).join("\n");
+    eachProduk: (context, produks, option) => {
+        const result = produks.map(produk => option.fn({...context, produk})).join("\n");
         return new Handlebars.SafeString(result);
     },
 };

@@ -12,10 +12,13 @@
             {{/ifEq}}
         </div>
         {{#if useAction}}
-
             {{#ifEq this user.role.role_name "Penjual"}}
                 {{#if user.Kedai_Profile}}
                     <div class="flex flex-col mt-2 gap-2">
+                        <p class="bg-white/50 py-1 px-2 rounded-lg">Data Transaksi</p>
+                        <a href="/transaksi/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Kasir</a>
+                        <a href="/transaksi" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Rekap</a>
+                        <a href="/prediksi" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Prediksi</a>
                         <p class="bg-white/50 py-1 px-2 rounded-lg">Data Produksi</p>
                         <a href="/produk/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Menu</a>
                         <a href="/bahan/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Bahan</a>

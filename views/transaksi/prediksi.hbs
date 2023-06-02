@@ -1,0 +1,57 @@
+<div class="bg-white flex-grow h-[calc(100vh-3rem)]">
+    <form>
+        <select name="produkId" id="produkId" onchange="submit()">
+            <option value disabled selected>Select produk</option>
+            {{#eachProduk this produks}}
+                <option value="{{produk.Id}}" {{#ifEq this pos produk.Id}}selected{{/ifEq}}>{{produk.name}}</option>
+            {{/eachProduk}}
+        </select>
+    </form>
+    <div class="w-2/3 ">
+        <canvas id="chart"></canvas>
+    </div>
+    <h1>Next Month: &pm; {{prediction}}</h1>
+</div>
+<script src="/node_modules/chart.js/dist/chart.umd.js"></script>
+<script>
+    const ctx = document.getElementById("chart");
+    const mainChart = new Chart(ctx, {
+        options: {
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'index',
+                intersect: false
+            }
+        },
+        data: {
+            labels: [
+                {{#each graph}}
+                    "{{at}}",
+                {{/each}}
+            ],
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'prediction',
+                    data: [
+                        {{#each prediction_line}}
+                            {{this}},
+                        {{/each}}
+                    ]
+                },
+                {
+                    type: 'line',
+                    label: 'Income by month',
+                    data: [
+                        {{#each graph}}
+                            {{total}},
+                        {{/each}}
+                    ]
+                },
+            ]
+        }
+    });
+</script>
