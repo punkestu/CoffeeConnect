@@ -25,12 +25,13 @@ Projek ini dibangun menggunakan bahasa pemrograman **JavaScript** dengan menggun
 ```
 npm install
 ```
-2. Masukan username dan password postgresql pada file ```.env```
-3. Migrasi database
+2. Copy ```.env.example``` ke ```.env```
+3. Masukan username dan password postgresql pada file ```.env```
+4. Migrasi database
 ```
 npm run migrate
 ```
-4. Seed database
+5. Seed database
 ```
 npm run seed
 ```
