@@ -10,7 +10,12 @@ module.exports = {
                 user: true,
                 produk: {
                     include: {
-                        kedai: true
+                        kedai: true,
+                        _count: {
+                            select: {
+                                Ulasan: true
+                            }
+                        },
                     }
                 }
             }

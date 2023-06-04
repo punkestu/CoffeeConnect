@@ -1,4 +1,5 @@
 const produkM = require("../../model/produk");
+const {ulasan} = require("../../prisma/db");
 module.exports = {
     timeline: function (req, res) {
         produkM.findAll()
@@ -16,15 +17,49 @@ module.exports = {
         produkM.findFirst({
             produkId: req.params.produkId,
             kedaiId: req.params.kedaiId
-        }).then(Produk => {
+        }).then(async Produk => {
             if (Produk) {
                 Produk.updatedAt = new Date(Produk.updatedAt).toLocaleString();
                 req.session.back = req.originalUrl;
+                ulasan.aggregate({
+                    where: {
+                        AND: [
+                            {
+                                produkId: Produk.Id
+                            },
+                            {
+                                produkKedaiId: Produk.kedai.Id
+                            }
+                        ]
+                    },
+                    _avg: {
+                        rating: true
+                    }
+                }).then(({_avg: {rating}}) => {
+                    Produk.rating = rating;
+                    Produk.ratingInt = parseInt(rating);
+                });
+                const Ulasans = await ulasan.findMany({
+                    where: {
+                        AND: [
+                            {
+                                produkId: Produk.Id
+                            },
+                            {
+                                produkKedaiId: Produk.kedai.Id
+                            }
+                        ]
+                    },
+                    include: {
+                        user: true
+                    }
+                })
                 res.render("produk/detailproduk", {
                     user: req.session.user,
                     useAction: true,
                     kedai: req.session.user && req.session.user.Kedai_Profile,
-                    produk: Produk, title: `${Produk.kedai.name} | ${Produk.name}`
+                    produk: Produk, title: `${Produk.kedai.name} | ${Produk.name}`,
+                    ulasans: Ulasans
                 });
             } else {
                 res.render("error/404", {

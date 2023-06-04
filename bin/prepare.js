@@ -1,7 +1,5 @@
 const fs = require('fs');
 const os = require("os");
-const prompt = require('prompt-sync')({sigint: true});
-
 const setEnvValue = function (key, value) {
     const ENV_VARS = fs.readFileSync("./.env", "utf8").split(os.EOL);
 

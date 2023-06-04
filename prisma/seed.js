@@ -1,3 +1,4 @@
+require("dotenv").config();
 const {satuan} = require("./db");
 
 satuan.createMany({
@@ -8,6 +9,6 @@ satuan.createMany({
         {nama: "CC"},
         {nama: "ml"}
     ]
-}).then(Satuan=>{
+}).then(Satuan => {
     console.log(Satuan);
 });

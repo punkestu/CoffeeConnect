@@ -1,6 +1,6 @@
 <div class="min-h-[calc(100vh-3rem)] flex justify-center py-2 flex-grow">
     {{> notif }}
-    <div class="">
+    <div class="w-3/4">
         <div class="px-10 py-4 bg-white rounded-t-xl border flex flex-col gap-2">
             {{#ifEq this user.Id produk.kedai.user.Id }}
                 {{> confirmmodal }}
@@ -15,14 +15,81 @@
                 <a href="/k/{{produk.kedai.name}}" class="link">{{produk.kedai.name}}</a>
                 <span class="text-slate-500">by {{produk.kedai.user.full_name}}</span>
             </p>
+            <div class="text-3xl text-yellow-300">
+                {{produk.rating}}
+                {{#for this 5}}
+                    {{#cmp this count '<' produk.ratingInt}}
+                        <span class="fa fa-star"></span>
+                    {{else}}
+                        {{#cmp this count '<' produk.rating}}
+                            <span class="fa fa-star-half-full"></span>
+                        {{else}}
+                            <span class="fa fa-star-o"></span>
+                        {{/cmp}}
+                    {{/cmp}}
+                {{/for}}
+            </div>
             <p class="text-sm text-slate-500">Updated at {{produk.updatedAt}}</p>
             <img class=" p-4 border w-full" src="/picture/{{produk.picture}}" alt="">
             <h2 class="text-slate-500 text-md">Rp. {{produk.price}}</h2>
             <p>{{produk.description}}</p>
         </div>
-        <div class="bg-white py-4 rounded-b-xl">
-            <h1 class="text-center">Fitur Ulasan dalam pengerjaan ...</h1>
+        <div class="bg-white p-4 rounded-b-xl">
+            <form action="/ulasan/{{produk.kedai.name}}/{{produk.Id}}" method="post">
+                <input type="hidden" name="rating" id="rating" value="0">
+                <div id="star-group" class="text-3xl text-yellow-300">
+                    <button type="button" id="star1" class="fa fa-star-o" onclick="swaprating(1)">
+                    </button>
+                    <button type="button" id="star2" class="fa fa-star-o" onclick="swaprating(2)">
+                    </button>
+                    <button type="button" id="star3" class="fa fa-star-o" onclick="swaprating(3)">
+                    </button>
+                    <button type="button" id="star4" class="fa fa-star-o" onclick="swaprating(4)">
+                    </button>
+                    <button type="button" id="star5" class="fa fa-star-o" onclick="swaprating(5)">
+                    </button>
+                </div>
+                <input type="text" class="w-full mt-2" name="comment" id="comment">
+                <button type="submit" class="mt-2 btn-primary btn">Kirim</button>
+            </form>
+            <div>
+                {{#each ulasans}}
+                    <div class="flex flex-col border-b-2 mb-2">
+                        <a href="/p/{{user.username}}" class="text-2xl font-bold">{{user.full_name}}</a>
+                        <div class="text-2xl text-yellow-300">
+                            {{#for this 5}}
+                                {{#cmp this count '<' rating}}
+                                    <span class="fa fa-star"></span>
+                                {{else}}
+                                    <span class="fa fa-star-o"></span>
+                                {{/cmp}}
+                            {{/for}}
+                        </div>
+                        <p class="font-medium ps-2">{{comment}}</p>
+                    </div>
+                {{/each}}
+            </div>
         </div>
     </div>
 </div>
+<script>
+    function swaprating(val) {
+        const value = $("#rating").val(val);
+        console.log(value.val());
+        updatestar(value.val());
+    }
+
+    function updatestar(val) {
+        const btns = $("#star-group > button");
+        btns.each(function () {
+            if ($(this).attr("id")[4] <= val) {
+                $(this).addClass("fa-star");
+                $(this).removeClass("fa-star-o");
+            } else {
+                $(this).removeClass("fa-star");
+                $(this).addClass("fa-star-o");
+            }
+        })
+    }
+</script>
 <script src="/js/copyCB.js"></script>

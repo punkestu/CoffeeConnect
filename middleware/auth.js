@@ -1,7 +1,6 @@
 const {body} = require("express-validator");
 const {user} = require("../prisma/db");
 const {compare, hash} = require("bcrypt");
-const {verify} = require("jsonwebtoken");
 
 module.exports = {
     isAuth: function (req, res, next) {
@@ -15,6 +14,19 @@ module.exports = {
             return next();
         }
         return res.redirect("/");
+    },
+    isPremium: function (req,res,next){
+        console.log(req.session.user);
+        if(req.session.user.premium){
+            return next()
+        }
+        return res.redirect("/premium");
+    },
+    isNotPremium: function (req,res,next){
+        if(!req.session.user.premium){
+            return next()
+        }
+        return res.redirect("back");
     },
     required: {
         fullname: body("fullname")

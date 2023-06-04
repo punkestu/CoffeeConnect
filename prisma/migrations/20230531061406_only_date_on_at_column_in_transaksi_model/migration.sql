@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Transaksi" ALTER COLUMN "at" SET DATA TYPE DATE;
