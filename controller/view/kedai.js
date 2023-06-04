@@ -1,5 +1,5 @@
 const kedaiM = require("../../model/kedai");
-const {produk, ulasan} = require("../../prisma/db");
+const {ulasan} = require("../../prisma/db");
 module.exports = {
     kedaiprofile: function (req, res) {
         kedaiM.findFirst({namaKedai: req.params.namakedai})

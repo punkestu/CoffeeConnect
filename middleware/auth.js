@@ -1,7 +1,6 @@
 const {body} = require("express-validator");
 const {user} = require("../prisma/db");
 const {compare, hash} = require("bcrypt");
-const {verify} = require("jsonwebtoken");
 
 module.exports = {
     isAuth: function (req, res, next) {

@@ -29,8 +29,4 @@ Migrasi database
 ```
 npm run migrate
 ```
-Seed database
-```
-npm run seed
-```
 Set NODE_ENV sebagai "production" atau "development" pada ```.env``` lalu jalankan aplikasi dengan ```npm run start``` atau ```npm run dev``` untuk development.

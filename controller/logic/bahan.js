@@ -9,7 +9,7 @@ module.exports = {
             satuanId: req.body.satuan,
             harga: req.body.harga,
             per: req.body.per
-        }).then(Bahan=>{
+        }).then(()=>{
         return res.redirect("/bahan");
         });
     },
