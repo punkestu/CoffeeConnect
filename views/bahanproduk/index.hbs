@@ -1,8 +1,7 @@
 <div class="flex-grow p-4 h-[calc(100vh-3rem)]">
     <div class="bg-white h-full overflow-y-scroll rounded-xl p-8 {{#unless produk}}flex items-center justify-center{{/unless}}">
-        {{#unless produk}}-->
-            <div class="flex gap-1">Belum ada data produk <a href="/produk/tambah"
-                                                             class="link text-blue-500">Tambah?</a>
+        {{#unless produk}}
+            <div class="flex gap-1">Belum ada data produk <a href="/produk/tambah" class="link text-blue-500">Tambah?</a>
             </div>
         {{/unless}}
         {{#each produk}}
