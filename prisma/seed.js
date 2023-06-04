@@ -1,3 +1,4 @@
+require("dotenv").config();
 const {satuan} = require("./db");
 
 satuan.createMany({
