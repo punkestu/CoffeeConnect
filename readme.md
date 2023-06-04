@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="460" height="460" src="https://github.com/punkestu/PPL_project_2023/blob/master/coffeeconnect.png">
+</p>
+
 # Projek CoffeeConnect
 _PPL TI B9 - 2023_
 
