@@ -4,7 +4,8 @@ const {predictWithData} = require("../../machine/predict");
 
 module.exports = {
     kasir: function (req, res) {
-        produkM.findMy({kedaiId: req.session.user.id}).then(Produks => {
+        produkM.findMy({kedaiId: req.session.user.Id}).then(Produks => {
+            console.log({Produks, kedaiId: req.session.user.Id});
             return res.render("transaksi/kasir", {
                 user: req.session.user,
                 useAction: true,
@@ -41,9 +42,12 @@ module.exports = {
                 kedaiId: req.session.user.Id,
                 since: oneYearFromNow.toISOString()
             });
-            const nextMonth = new Date();
-            nextMonth.setMonth(nextMonth.getMonth() + 1);
-            const prediction = predictWithData({data: graph, next: nextMonth.getTime() / 1000});
+            var prediction = [];
+            if (graph.length > 0) {
+                const nextMonth = new Date();
+                nextMonth.setMonth(nextMonth.getMonth() + 1);
+                prediction = predictWithData({data: graph, next: nextMonth.getTime() / 1000});
+            }
             return res.render("transaksi/rekap",
                 {
                     user: req.session.user,
@@ -87,5 +91,12 @@ module.exports = {
                 pos: parseInt(req.query.produkId)
             });
         }
+    },
+    export: function (req, res) {
+        res.render("transaksi/export", {
+            user: req.session.user,
+            useAction: true,
+            kedai: req.session.user && req.session.user.Kedai_Profile,
+        });
     }
 };

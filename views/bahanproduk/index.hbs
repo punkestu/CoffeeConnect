@@ -1,19 +1,30 @@
-<div class="flex-grow m-2 h-[calc(100vh-4rem)] flex flex-col gap-2">
-    {{#each produk}}
-        <div class="bg-white m-2 p-4 rounded-xl">
-            <h1>{{name}}</h1>
-            <div class="bg-slate-100 p-4 mt-2 flex flex-col gap-2">
-                {{#each bahan}}
-                    <div>
-                        <div class="flex gap-2 items-end">
-                            <h2 class="font-medium text-xl">{{nama}}</h2>
-                            <a href="/bahan/edit/{{Id}}" class="link">Edit</a>
-                        </div>
-                        <h2>Takaran: {{qty}} {{satuan.nama}}</h2>
-                        <h2>Harga: Rp.{{harga}}/{{per}} {{satuan.nama}}</h2>
-                    </div>
-                {{/each}}
+<div class="flex-grow p-4 h-[calc(100vh-3rem)]">
+    <div class="bg-white h-full overflow-y-scroll rounded-xl p-8 {{#unless produk}}flex items-center justify-center{{/unless}}">
+        {{#unless produk}}-->
+            <div class="flex gap-1">Belum ada data produk <a href="/produk/tambah"
+                                                             class="link text-blue-500">Tambah?</a>
             </div>
-        </div>
-    {{/each}}
+        {{/unless}}
+        {{#each produk}}
+            <div class="bg-white border-2 mt-4 mx-2 p-4 rounded-xl">
+                <h1>{{name}}</h1>
+                <div class="bg-slate-100 p-4 mt-2 flex flex-col gap-2">
+                    {{#unless bahan}}
+                        <div class="flex gap-1">Belum ada data bahan <a href="/bahan/tambah" class="link text-blue-500">Tambah?</a>
+                        </div>
+                    {{/unless}}
+                    {{#each bahan}}
+                        <div>
+                            <div class="flex gap-2 items-end">
+                                <h2 class="font-medium text-xl">{{nama}}</h2>
+                                <a href="/bahan/edit/{{Id}}" class="link">Edit</a>
+                            </div>
+                            <h2>Takaran: {{qty}} {{satuan.nama}}</h2>
+                            <h2>Harga: Rp.{{harga}}/{{per}} {{satuan.nama}}</h2>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
 </div>

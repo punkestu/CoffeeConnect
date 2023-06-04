@@ -10,7 +10,7 @@ module.exports = {
             harga: req.body.harga,
             per: req.body.per
         }).then(Bahan=>{
-            return res.redirect("/");
+        return res.redirect("/bahan");
         });
     },
     edit: function(req,res){

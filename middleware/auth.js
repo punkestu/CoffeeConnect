@@ -16,6 +16,19 @@ module.exports = {
         }
         return res.redirect("/");
     },
+    isPremium: function (req,res,next){
+        console.log(req.session.user);
+        if(req.session.user.premium){
+            return next()
+        }
+        return res.redirect("/premium");
+    },
+    isNotPremium: function (req,res,next){
+        if(!req.session.user.premium){
+            return next()
+        }
+        return res.redirect("back");
+    },
     required: {
         fullname: body("fullname")
             .notEmpty()

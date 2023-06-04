@@ -1,16 +1,20 @@
-<div class="bg-white flex-grow h-[calc(100vh-3rem)]">
-    <form>
-        <select name="produkId" id="produkId" onchange="submit()">
-            <option value disabled selected>Select produk</option>
-            {{#eachProduk this produks}}
-                <option value="{{produk.Id}}" {{#ifEq this pos produk.Id}}selected{{/ifEq}}>{{produk.name}}</option>
-            {{/eachProduk}}
-        </select>
-    </form>
-    <div class="w-2/3 ">
-        <canvas id="chart"></canvas>
+<div class="flex-grow h-[calc(100vh-3rem)] p-4">
+    <div class="bg-white p-4 rounded-xl w-full">
+        <form>
+            <select name="produkId" id="produkId" class="input-type" onchange="submit()">
+                <option value disabled selected>Select produk</option>
+                {{#eachProduk this produks}}
+                    <option value="{{produk.Id}}" {{#ifEq this pos produk.Id}}selected{{/ifEq}}>{{produk.name}}</option>
+                {{/eachProduk}}
+            </select>
+        </form>
+        <div class="flex flex-col items-center mb-2">
+            <div class="w-2/3">
+                <canvas id="chart"></canvas>
+            </div>
+            <h1>Next Month: &pm; {{prediction}}</h1>
+        </div>
     </div>
-    <h1>Next Month: &pm; {{prediction}}</h1>
 </div>
 <script src="/node_modules/chart.js/dist/chart.umd.js"></script>
 <script>

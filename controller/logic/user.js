@@ -1,4 +1,5 @@
 const userProfileM = require("../../model/userProfile");
+const {user} = require("../../prisma/db");
 module.exports = {
     upsert: function (req, res) {
         if (req.session.error) {
@@ -18,6 +19,20 @@ module.exports = {
             }
             req.session.user.profile = Profile;
             res.redirect(`/p/${req.session.user.username}`);
+        })
+    },
+    premium: function(req,res){
+        user.update({
+            where: {
+                Id: req.session.user.Id
+            },
+            data: {
+                premium: true,
+                premium_at: new Date()
+            }
+        }).then(User=>{
+            req.session.user.premium = User.premium;
+            return res.redirect("/");
         })
     }
 }

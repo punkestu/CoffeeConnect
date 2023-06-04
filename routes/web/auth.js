@@ -1,8 +1,10 @@
 const router = require("express").Router();
 
 const authV = require("../../controller/view/auth");
+const userV = require("../../controller/view/user");
 const authC = require("../../controller/logic/auth");
-const {required, struct, exist, match, notExist, encrypt, isAuth, isGuest} = require("../../middleware/auth");
+const userC = require("../../controller/logic/user");
+const {required, struct, exist, match, notExist, encrypt, isAuth, isGuest, isNotPremium} = require("../../middleware/auth");
 const errorHandle = require("../../middleware/errorHandle");
 
 router.get("/logout", isAuth, function (req, res) {
@@ -42,5 +44,8 @@ router.post("/registerpenjual",
     encrypt.password,
     authC.registerpenjual
 );
+
+router.get("/premium", isAuth, isNotPremium, userV.premium);
+router.post("/premium", isAuth, isNotPremium, userC.premium);
 
 module.exports = router;

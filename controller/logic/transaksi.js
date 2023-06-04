@@ -9,26 +9,33 @@ module.exports = {
             kedaiId: req.session.user.Id,
             dataTransaksi: req.body.dTransaksi
         }).then(_ => {
-            return res.redirect("/");
+            return res.redirect("/transaksi");
         });
     },
     export: function (req, res) {
         createReadStream(req.file.destination + req.file.filename)
             .pipe(parse({delimiter: ",", from_line: 2}))
             .on("data", function (row) {
-                transaksiM.create({
-                    at: new Date(row[0].split("/").reverse()),
-                    kedaiId: req.session.user.Id,
-                    dataTransaksi: [
-                        {
-                            produkId: parseInt(row[1]),
-                            qty: parseInt(row[2])
-                        }
-                    ]
-                }).then(Transaksi=>{
-                    console.log(Transaksi);
-                });
+                try {
+
+                    transaksiM.create({
+                        at: new Date(row[0].split("/").reverse()),
+                        kedaiId: req.session.user.Id,
+                        dataTransaksi: [
+                            {
+                                produkId: parseInt(row[1]),
+                                qty: parseInt(row[2])
+                            }
+                        ]
+                    }).then(Transaksi => {
+                        console.log(Transaksi);
+                    }, err => {
+                        console.log(err);
+                    });
+                }catch (e) {
+                    console.log(e);
+                }
             })
-        res.sendStatus(200);
+        return res.redirect("/transaksi");
     }
 };

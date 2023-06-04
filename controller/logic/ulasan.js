@@ -7,38 +7,16 @@ module.exports = {
                     name: req.params.kedaiName,
                 }
             }).then(Kedai => {
-                ulasan.findFirst({
-                    where: {
-                        user: {
-                            Id: req.session.user.Id
-                        },
-                        produk: {
-                            Id: parseInt(req.params.produkId),
-                            kedai: {
-                                Id: Kedai.Id
-                            }
-                        }
-                    }
-                });
                 ulasan.upsert({
                     where: {
-                        AND: [
-                            {
-                                user: {
-                                    Id: req.session.user.Id
-                                }
-                            }, {
-                                produk: {
-                                    Id: parseInt(req.params.produkId),
-                                    kedai: {
-                                        Id: Kedai.Id
-                                    }
-                                }
-                            }
-                        ],
+                        userId_produkId_produkKedaiId: {
+                            userId: req.session.user.Id,
+                            produkId: parseInt(req.params.produkId),
+                            produkKedaiId: Kedai.Id
+                        }
                     },
                     update: {
-                        rating: parseFloat(req.body.star),
+                        rating: parseInt(req.body.rating),
                         comment: req.body.comment
                     },
                     create: {
@@ -55,7 +33,7 @@ module.exports = {
                                 }
                             }
                         },
-                        rating: parseFloat(req.body.star),
+                        rating: parseFloat(req.body.rating),
                         comment: req.body.comment
                     }
                 }).then(_ => {

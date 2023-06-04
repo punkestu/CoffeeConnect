@@ -1,7 +1,7 @@
 <div class="mt-2 p-2 flex-grow flex flex-col items-center min-h-[calc(100vh-3rem)]">
     {{> notif}}
     <div class="bg-white p-4 rounded-xl w-2/3">
-        <img src="/picture/{{kedai.picture}}" alt="">
+        <img src="/picture/{{kedai.picture}}" class="w-full h-72 object-cover border" alt="">
         <div class="flex items-end justify-between gap-3 px-8 mt-4">
             <div class="flex items-end gap-3 mb-2">
                 <h1>{{kedai.name}}</h1>
@@ -11,6 +11,15 @@
             </div>
         </div>
         <div class="flex flex-col gap-2 px-8">
+            <div class="text-3xl text-yellow-300">
+                {{#for this 5}}
+                    {{#cmp this count '<' kedai.rating._avg.rating}}
+                        <span class="fa fa-star"></span>
+                    {{else}}
+                        <span class="fa fa-star-o"></span>
+                    {{/cmp}}
+                {{/for}}
+            </div>
             <a href="/p/{{kedai.user.username}}">by <span class="link">{{kedai.user.username}}</span></a>
             <p class="text-slate-600">{{kedai.address}}</p>
             <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
@@ -40,11 +49,16 @@
                         <div class="mt-2 flex justify-between items-center gap-3 w-full">
                             <p class="flex gap-1 items-center text-slate-400">
                                 <span class="material-icons">comment</span>
-                                99+
+                                {{produk._count.Ulasan}}
                             </p>
                             <p class="flex gap-1 items-center text-slate-400">
                                 <span class="material-icons">star</span>
-                                5/5
+                                {{#if produk.rating}}
+                                    {{produk.rating._avg.rating}}
+                                {{else}}
+                                    0
+                                {{/if}}
+                                /5
                             </p>
                         </div>
                     </a>
@@ -60,11 +74,6 @@
     <script>
         const bio = "{{kedai.description}}";
         var isExpand = false;
-
-        // function copyCB(link) {
-        //     navigator.clipboard.writeText(window.location.host + link);
-        //     dropdown.hide();
-        // }
 
         function expand() {
             const $bio = $("#bio");

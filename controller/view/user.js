@@ -8,8 +8,10 @@ module.exports = {
             req.session.back = req.originalUrl;
             res.render("user/profile", {
                 useHeader: true,
+                useAction: true,
                 profile: User,
                 user: req.session.user,
+                kedai: req.session.user && req.session.user.Kedai_Profile,
                 title: User.username
             });
         })
@@ -22,10 +24,20 @@ module.exports = {
         req.session.back = req.originalUrl;
         res.render("user/editprofile", {
             useHeader: true,
+            useAction: true,
             user: req.session.user,
+            kedai: req.session.user && req.session.user.Kedai_Profile,
             errors,
             payload,
             title: "Edit Profile User"
         });
+    },
+    premium: function(req,res){
+        return res.render("premium/index", {
+            useHeader: true,
+            useAction: true,
+            user: req.session.user,
+            title: "Premium"
+        })
     }
 }

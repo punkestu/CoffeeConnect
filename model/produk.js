@@ -3,7 +3,7 @@ module.exports = {
     findMy: function ({kedaiId}) {
         return produk.findMany({
             where: {
-                kedaiId
+                kedaiId: kedaiId
             }
         });
     },
