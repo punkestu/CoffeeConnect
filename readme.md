@@ -31,7 +31,11 @@ npm install
 ```
 npm run migrate
 ```
-5. Seed database
+5. Generate orm client
+```
+npx prisma generate
+```
+6. Seed database
 ```
 npm run seed
 ```
