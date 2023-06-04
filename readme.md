@@ -21,22 +21,21 @@ Projek ini dibuat sebagai bentuk pengerjaan tugas akhir mata kuliah **Perancanga
 Projek ini dibangun menggunakan bahasa pemrograman **JavaScript** dengan menggunakan framework **Nodejs** dan **Prisma**. Database yang digunakan adalah **PostgreSQL** dan view engine yang digunakan adalah **Handlebars**.
 
 ## Instalasi
-Jalankan instalasi modul nodejs
+1. Jalankan instalasi modul nodejs
 ```
 npm install
 ```
-lalu masukan username dan password postgresql pada file ```.env```
-
-Jika ingin mengganti data preparasi dapat menjalankan lagi perintah preparasi
-```
-npm run prepare
-```
-Migrasi database
+2. Masukan username dan password postgresql pada file ```.env```
+3. Migrasi database
 ```
 npm run migrate
 ```
-Seed database
+4. Seed database
 ```
 npm run seed
 ```
-Set NODE_ENV sebagai "production" atau "development" pada ```.env``` lalu jalankan aplikasi dengan ```npm run start``` atau ```npm run dev``` untuk development.
+(optional) Jika ingin mengganti data preparasi dapat menjalankan lagi perintah preparasi
+```
+npm run prepare
+```
+(optional) Set NODE_ENV sebagai "production" atau "development" pada ```.env``` lalu jalankan aplikasi dengan ```npm run start``` atau ```npm run dev``` untuk development.
