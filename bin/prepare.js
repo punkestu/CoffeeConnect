@@ -1,6 +1,5 @@
 const fs = require('fs');
 const os = require("os");
-const seeder = require("../prisma/seed");
 const setEnvValue = function (key, value) {
     const ENV_VARS = fs.readFileSync("./.env", "utf8").split(os.EOL);
 
@@ -27,5 +26,3 @@ fs.copyFile('./.env.example', './.env', async (err) => {
         setEnvValue("JWT_KEY", '"'+token+'"');
     });
 });
-
-seeder();
