@@ -95,7 +95,8 @@ module.exports = {
                         user: req.session.user,
                         kedai: req.session.user.Kedai_Profile,
                         produk: Produk,
-                        editMode: true, title: `Edit Produk | ${Produk.name}`
+                        editMode: true, title: `Edit Produk | ${Produk.name}`,
+                        useAction: true
                     });
                 } else {
                     res.render("error/404", {

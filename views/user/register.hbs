@@ -2,7 +2,7 @@
     <h1 class="text-center my-3">Registrasi {{role}}</h1>
     <form action="{{endpoint}}" method="POST" class="flex flex-col items-center gap-2 my-2 w-1/2 lg:w-1/3">
         <div class="w-full">
-            <label for="fullname" class="font-bold">Nama Lengkap</label>
+            <label for="fullname" class="font-bold">Full Name</label>
             <input
                     type="text"
                     name="fullname"
@@ -47,15 +47,13 @@
             />
             <p class="error-msg">{{errors.password.msg}}</p>
         </div>
-        <button type="submit" class="btn btn-primary w-full">Daftar</button>
-        atau
-
+        <button type="submit" class="btn btn-primary w-full">Register</button>
+        or
         {{#ifEq this endpoint "/registerpenjual"}}
-            <a href="/register" class="link">Daftar sebagai pembeli</a>
+            <a href="/register" class="link">Register as a Buyer</a>
         {{else}}
-            <a href="/registerpenjual" class="link">Daftar sebagai penjual</a>
+            <a href="/registerpenjual" class="link">Register as a Seller</a>
         {{/ifEq}}
-
-        <a href="/login" class="link">Sudah punya akun?</a>
+        <a href="/login" class="link">Already have an account?</a>
     </form>
 </div>

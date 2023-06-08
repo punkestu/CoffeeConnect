@@ -22,21 +22,21 @@
             </div>
         </div>
         <div class="w-full">
-            <label for="name" class="font-bold">Nama</label>
+            <label for="name" class="font-bold">Name</label>
             <input type="text" name="name" id="name" class="input-type w-full" value="{{produk.name}}" placeholder="Nama Menu">
         </div>
         <div class="w-full">
-            <label for="price" class="font-bold">Harga</label>
+            <label for="price" class="font-bold">Price</label>
             <input type="number" name="price" id="price" class="input-type w-full" value="{{produk.price}}" placeholder="Harga">
         </div>
         <div class="w-full">
-            <label for="description" class="font-bold">Deskripsi</label>
+            <label for="description" class="font-bold">Description</label>
             <textarea name="description" id="description" cols="30" rows="10" class="w-full input-type" placeholder="Deskripsi">{{produk.description}}</textarea>
         </div>
         {{#if editMode}}
-            <button class="btn btn-primary">Simpan</button>
+            <button class="btn btn-primary">Save</button>
         {{else}}
-            <button class="btn btn-primary">Buat</button>
+            <button class="btn btn-primary">Create</button>
         {{/if}}
         <script>
             function readURL(input) {

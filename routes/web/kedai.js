@@ -12,5 +12,6 @@ router.post("/k", isAuth, pictureM.save.picture,
     kedaiC.upsert
 );
 router.get("/editkedai", isAuth,kedaiV.editkedaiprofile);
+router.get("/produks", isAuth, kedaiV.products);
 
 module.exports = router;

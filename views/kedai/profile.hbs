@@ -1,36 +1,39 @@
 <div class="mt-2 p-2 flex-grow flex flex-col items-center min-h-[calc(100vh-3rem)]">
     {{> notif}}
-    <div class="bg-white p-4 rounded-xl w-2/3">
-        <img src="/picture/{{kedai.picture}}" class="w-full h-72 object-cover border" alt="">
-        <div class="flex items-end justify-between gap-3 px-8 mt-4">
-            <div class="flex items-end gap-3 mb-2">
-                <h1>{{kedai.name}}</h1>
-                {{#ifEq this kedai.user.username user.username}}
-                    <a href="/editkedai" class="link">Edit</a>
-                {{/ifEq}}
+    {{#if profile}}
+        <div class="bg-white p-4 rounded-xl w-2/3">
+            <img src="/picture/{{kedai.picture}}" class="w-full h-72 object-cover border" alt="">
+            <div class="flex items-end justify-between gap-3 px-8 mt-4">
+                <div class="flex items-end gap-3 mb-2">
+                    <h1>{{kedai.name}}</h1>
+                    {{#ifEq this kedai.user.username user.username}}
+                        <a href="/editkedai" class="link">Edit Profile</a>
+                    {{/ifEq}}
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 px-8">
+                <div class="text-3xl text-yellow-300">
+                    {{#for this 5}}
+                        {{#cmp this count '<' kedai.rating._avg.rating}}
+                            <span class="fa fa-star"></span>
+                        {{else}}
+                            <span class="fa fa-star-o"></span>
+                        {{/cmp}}
+                    {{/for}}
+                </div>
+                <a href="/p/{{kedai.user.username}}">by <span class="link">{{kedai.user.username}}</span></a>
+                <p class="text-slate-600">{{kedai.address}}</p>
+                <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
+                <div class="flex flex-col items-center gap-2">
+                    <p id="bio" class="text-left w-full"></p>
+                    <button id="expandBtn" class="rounded px-2 bg-slate-300 text-slate-700 text w-1/3"
+                            onclick="expand()">
+                        expand
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="flex flex-col gap-2 px-8">
-            <div class="text-3xl text-yellow-300">
-                {{#for this 5}}
-                    {{#cmp this count '<' kedai.rating._avg.rating}}
-                        <span class="fa fa-star"></span>
-                    {{else}}
-                        <span class="fa fa-star-o"></span>
-                    {{/cmp}}
-                {{/for}}
-            </div>
-            <a href="/p/{{kedai.user.username}}">by <span class="link">{{kedai.user.username}}</span></a>
-            <p class="text-slate-600">{{kedai.address}}</p>
-            <a href="http://wa.me/{{kedai.phone}}" class="link self-start">Contact me: {{kedai.phone}}</a>
-            <div class="flex flex-col items-center gap-2">
-                <p id="bio" class="text-left w-full"></p>
-                <button id="expandBtn" class="rounded px-2 bg-slate-300 text-slate-700 text w-1/3" onclick="expand()">
-                    expand
-                </button>
-            </div>
-        </div>
-    </div>
+    {{/if}}
     <hr class="mt-2"/>
     <div class="mt-2 flex flex-wrap w-2/3">
         {{#eachProduk this kedai.produk}}
