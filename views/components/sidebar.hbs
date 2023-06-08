@@ -4,10 +4,11 @@
             <a href="/">Home</a>
             {{#ifEq this user.role.role_name "Penjual"}}
                 {{#if user.Kedai_Profile}}
-                    <a href="/k/{{user.Kedai_Profile.name}}">Profile kedai</a>
-                    <a href="/bahan">Bahan Produk</a>
+                    <a href="/k/{{user.Kedai_Profile.name}}">Store Profile</a>
+                    <a href="/produks">Products</a>
+                    <a href="/bahan">Product Ingredients</a>
                 {{else}}
-                    <a href="/editKedai">Profile kedai</a>
+                    <a href="/editKedai">Store Profile</a>
                 {{/if}}
             {{/ifEq}}
         </div>
@@ -15,14 +16,14 @@
             {{#ifEq this user.role.role_name "Penjual"}}
                 {{#if user.Kedai_Profile}}
                     <div class="flex flex-col mt-2 gap-2">
-                        <p class="bg-white/50 py-1 px-2 rounded-lg">Data Transaksi</p>
+                        <p class="bg-white/50 py-1 px-2 rounded-lg">Sales Data Detail</p>
                         <a href="/transaksi/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Kasir</a>
                         <a href="/transaksi" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Rekap</a>
                         <a href="/prediksi" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Prediksi</a>
                         <a href="/export" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Import</a>
-                        <p class="bg-white/50 py-1 px-2 rounded-lg">Data Produksi</p>
-                        <a href="/produk/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Produk</a>
-                        <a href="/bahan/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Tambah Bahan</a>
+                        <p class="bg-white/50 py-1 px-2 rounded-lg">Production Data</p>
+                        <a href="/bahan/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Add Production Data</a>
+                        <a href="/produk/tambah" class="bg-green-400/70 py-1 px-2 rounded-lg">+ Add Menu</a>
                     </div>
                 {{/if}}
             {{/ifEq}}

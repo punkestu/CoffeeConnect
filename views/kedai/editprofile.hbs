@@ -6,7 +6,8 @@
                 <div class="{{#unless kedai.picture}}hidden {{/unless}}h-64 w-full flex justify-center" id="displaypic">
                     <img class="object-contain" src="/picture/{{kedai.picture}}" alt="">
                 </div>
-                <div class="{{#if kedai.picture}}hidden {{/if}}flex flex-col items-center justify-center pt-5 pb-6" id="dialogpic">
+                <div class="{{#if kedai.picture}}hidden {{/if}}flex flex-col items-center justify-center pt-5 pb-6"
+                     id="dialogpic">
                     <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -17,27 +18,31 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">PNG or JPG</p>
                 </div>
             </label>
-            <input id="dropzone-file" type="file" class="hidden" name="picture" value="{{kedai.picture}}" onchange="readURL(this)"/>
+            <input id="dropzone-file" type="file" class="hidden" name="picture" value="{{kedai.picture}}"
+                   onchange="readURL(this)"/>
         </div>
         <div class="flex justify-between items-stretch gap-5">
             <div class="flex-grow flex flex-col">
-                <label for="name" class="font-medium">Nama</label>
+                <label for="name" class="font-medium">Name</label>
                 <input type="text" name="name" class="input-type" id="name" placeholder="Kedai name"
                        value="{{kedai.name}}"/>
-                <label for="address" class="font-medium">Alamat</label>
+                <label for="address" class="font-medium">Address</label>
                 <textarea name="address" class="input-type" id="address" cols="30" rows="10"
                           placeholder="Address">{{kedai.address}}</textarea>
-                <label for="phone" class="font-medium">No Telepon</label>
+                <label for="phone" class="font-medium">Phone Number</label>
                 <input type="tel" class="input-type" name="phone" id="phone" placeholder="Phone number"
                        value="{{kedai.phone}}"/>
             </div>
             <div class="flex-grow flex flex-col">
-                <label for="description" class="font-medium">Deskripsi</label>
+                <label for="description" class="font-medium">Description</label>
                 <textarea name="description" class="input-type h-full" id="description" cols="30" rows="10"
                           placeholder="Description">{{kedai.description}}</textarea>
             </div>
         </div>
-        <button class="btn btn-primary">Save</button>
+        <div class="flex gap-4 justify-end">
+            <a class="btn btn-secondary text-center" href="/">Cancel</a>
+            <button class="btn btn-primary">Save</button>
+        </div>
     </form>
     <script>
         function readURL(input) {
